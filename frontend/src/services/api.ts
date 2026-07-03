@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://ai-gabarita.vercel.app/api'; 
+const API_BASE_URL = import.meta.env.VITE_API_URL; 
 export interface StudyPlan {
   id: string;
   course_id: string;

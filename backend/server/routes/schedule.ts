@@ -3,6 +3,8 @@ import { v4 as uuidv4 } from 'uuid';
 import db from '../database.js';
 import { generateSchedule } from '../utils/scheduleGenerator.js';
 
+//teste
+
 const router = express.Router();
 
 // GET schedule progress for a study plan

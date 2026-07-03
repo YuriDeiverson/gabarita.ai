@@ -1,5 +1,4 @@
-const API_BASE_URL = 'http://localhost:3001/api';
-
+const API_BASE_URL = 'https://ai-gabarita.vercel.app/api'; 
 export interface StudyPlan {
   id: string;
   course_id: string;

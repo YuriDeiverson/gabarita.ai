@@ -1,6 +1,6 @@
 import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
-import db from '../database';
+import db from '../database.js';
 
 const router = express.Router();
 

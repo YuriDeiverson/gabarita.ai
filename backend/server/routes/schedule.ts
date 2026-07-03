@@ -1,7 +1,7 @@
 import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
-import db from '../database';
-import { generateSchedule } from '../utils/scheduleGenerator';
+import db from '../database.js';
+import { generateSchedule } from '../utils/scheduleGenerator.js';
 
 const router = express.Router();
 

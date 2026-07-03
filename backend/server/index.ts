@@ -1,10 +1,10 @@
 import express from 'express';
 import cors from 'cors';
 import bodyparser from 'body-parser';
-import { initDatabase } from './database';
-import studyPlansRouter from './routes/studyPlans';
-import quizProgressRouter from './routes/quizProgress';
-import scheduleRouter from './routes/schedule';
+import { initDatabase } from './database.js';
+import studyPlansRouter from './routes/studyPlans.js';
+import quizProgressRouter from './routes/quizProgress.js';
+import scheduleRouter from './routes/schedule.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;

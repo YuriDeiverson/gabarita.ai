@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, MouseEvent } from 'react';
 import { COURSES_CONFIG, generateCustomPlan } from '../data/generator';
+import { studyPlansApi, scheduleApi } from '../services/api';
 import { 
   Calendar, 
   Clock, 
@@ -36,14 +37,24 @@ export default function HomeTab({ onPlanGenerated }: HomeTabProps) {
   const [savedPlans, setSavedPlans] = useState<{ [key: string]: any }>({});
 
   const weekdayOptions = [
-    { label: 'Seg', value: 1 },
-    { label: 'Ter', value: 2 },
-    { label: 'Qua', value: 3 },
-    { label: 'Qui', value: 4 },
-    { label: 'Sex', value: 5 },
-    { label: 'Sáb', value: 6 },
-    { label: 'Dom', value: 0 },
-  ];
+  { label: 'Seg', value: 1 },
+  { label: 'Ter', value: 2 },
+  { label: 'Qua', value: 3 },
+  { label: 'Qui', value: 4 },
+  { label: 'Sex', value: 5 },
+  { label: 'Sáb', value: 6 },
+  { label: 'Dom', value: 0 },
+];
+
+const WEEKDAY_NUMBER_TO_NAME: { [key: number]: string } = {
+  0: 'domingo',
+  1: 'segunda',
+  2: 'terca',
+  3: 'quarta',
+  4: 'quinta',
+  5: 'sexta',
+  6: 'sabado',
+};
 
   // Helper to calculate matching study days between today (July 2, 2026) and exam date
   const calculateStudyDays = (examDateStr: string, weekdays: number[]): number => {
@@ -178,7 +189,7 @@ export default function HomeTab({ onPlanGenerated }: HomeTabProps) {
     );
   };
 
-  const handleCreatePlan = () => {
+  const handleCreatePlan = async () => {
     if (selectedTopicIds.length === 0) {
       alert("Por favor, selecione pelo menos um assunto para estudar!");
       return;
@@ -200,51 +211,88 @@ export default function HomeTab({ onPlanGenerated }: HomeTabProps) {
       }
     }
 
-    // Call generator to build custom study sections, questions, and calendar weeks
-    const result = generateCustomPlan(
-      selectedCourse,
-      examDate,
-      calculatedDays,
-      hoursPerDay,
-      selectedTopicIds,
-      selectedWeekdays
-    );
-
-    if (result.success) {
-      // 1. Save to course-specific prefixed keys (safe storage)
-      localStorage.setItem(`${selectedCourse}_study_sections`, JSON.stringify(result.sections));
-      localStorage.setItem(`${selectedCourse}_quiz_questions`, JSON.stringify(result.questions));
-      localStorage.setItem(`${selectedCourse}_schedule_weeks`, JSON.stringify(result.weeks));
-      localStorage.setItem(`${selectedCourse}_study_config`, JSON.stringify({
+    try {
+      // Call generator to build custom study sections, questions, and calendar weeks
+      const result = generateCustomPlan(
+        selectedCourse,
         examDate,
-        totalDays: calculatedDays,
+        calculatedDays,
         hoursPerDay,
-        selectedWeekdays,
-        selectedTopics: selectedTopicIds
-      }));
-      localStorage.removeItem(`${selectedCourse}_study_schedule_progress`);
-      localStorage.removeItem(`${selectedCourse}_quiz_answers`);
+        selectedTopicIds,
+        selectedWeekdays
+      );
 
-      // 2. Load into active keys (so other tabs immediately work)
-      localStorage.setItem('active_course', selectedCourse);
-      localStorage.setItem('custom_study_sections', JSON.stringify(result.sections));
-      localStorage.setItem('custom_quiz_questions', JSON.stringify(result.questions));
-      localStorage.setItem('custom_schedule_weeks', JSON.stringify(result.weeks));
-      localStorage.setItem('study_config', JSON.stringify({
-        examDate,
-        totalDays: calculatedDays,
-        hoursPerDay,
-        selectedWeekdays,
-        selectedTopics: selectedTopicIds
-      }));
-      localStorage.removeItem('study_schedule_progress');
-      localStorage.removeItem('quiz_answers');
+      if (result.success) {
+        // Generate schedule using API
+      const studyDaysPayload = selectedWeekdays.map(dayNum => ({
+  day: WEEKDAY_NUMBER_TO_NAME[dayNum],
+  hours: hoursPerDay,
+}));
 
-      // Reload saved plans list
-      loadSavedPlans();
+const scheduleResponse = await scheduleApi.generate({
+  courseId: selectedCourse,
+  examDate,
+  studyDays: studyDaysPayload,
+  studySections: result.sections
+});
 
-      // Trigger callback in parent component to switch to Study Summaries
-      onPlanGenerated(selectedCourse);
+const scheduleWeeks = scheduleResponse.scheduleWeeks; // <-- ADICIONAR ESSA LINHA
+
+        // Create study plan via API
+        const studyPlan = await studyPlansApi.create({
+          courseId: selectedCourse,
+          title: activeCourseConfig.name,
+          examDate,
+          hoursPerDay,
+          daysPerWeek: selectedWeekdays.length,
+          totalWeeks: scheduleWeeks.length,
+          studySections: result.sections,
+          scheduleWeeks: scheduleWeeks
+        });
+
+        // Activate the plan
+        await studyPlansApi.activate(studyPlan.id);
+
+        // 1. Save to course-specific prefixed keys (safe storage)
+        localStorage.setItem(`${selectedCourse}_study_sections`, JSON.stringify(result.sections));
+        localStorage.setItem(`${selectedCourse}_quiz_questions`, JSON.stringify(result.questions));
+        localStorage.setItem(`${selectedCourse}_schedule_weeks`, JSON.stringify(scheduleWeeks));
+        localStorage.setItem(`${selectedCourse}_study_config`, JSON.stringify({
+          examDate,
+          totalDays: calculatedDays,
+          hoursPerDay,
+          selectedWeekdays,
+          selectedTopics: selectedTopicIds,
+          studyPlanId: studyPlan.id
+        }));
+        localStorage.removeItem(`${selectedCourse}_study_schedule_progress`);
+        localStorage.removeItem(`${selectedCourse}_quiz_answers`);
+
+        // 2. Load into active keys (so other tabs immediately work)
+        localStorage.setItem('active_course', selectedCourse);
+        localStorage.setItem('custom_study_sections', JSON.stringify(result.sections));
+        localStorage.setItem('custom_quiz_questions', JSON.stringify(result.questions));
+        localStorage.setItem('custom_schedule_weeks', JSON.stringify(scheduleWeeks));
+        localStorage.setItem('study_config', JSON.stringify({
+          examDate,
+          totalDays: calculatedDays,
+          hoursPerDay,
+          selectedWeekdays,
+          selectedTopics: selectedTopicIds,
+          studyPlanId: studyPlan.id
+        }));
+        localStorage.removeItem('study_schedule_progress');
+        localStorage.removeItem('quiz_answers');
+
+        // Reload saved plans list
+        loadSavedPlans();
+
+        // Trigger callback in parent component to switch to Study Summaries
+        onPlanGenerated(selectedCourse);
+      }
+    } catch (error) {
+      console.error('Error creating study plan:', error);
+      alert('Erro ao criar plano de estudo. Tente novamente.');
     }
   };
 
@@ -282,29 +330,50 @@ export default function HomeTab({ onPlanGenerated }: HomeTabProps) {
     }
   };
 
-  const handleDeletePlan = (courseId: string, e: MouseEvent) => {
+  const handleDeletePlan = async (courseId: string, e: MouseEvent) => {
     e.stopPropagation(); // Avoid triggering card click
     if (window.confirm("Deseja realmente excluir este plano de estudos? Seu progresso e histórico serão perdidos de forma irreversível.")) {
-      localStorage.removeItem(`${courseId}_study_sections`);
-      localStorage.removeItem(`${courseId}_quiz_questions`);
-      localStorage.removeItem(`${courseId}_schedule_weeks`);
-      localStorage.removeItem(`${courseId}_study_config`);
-      localStorage.removeItem(`${courseId}_study_schedule_progress`);
-      localStorage.removeItem(`${courseId}_quiz_answers`);
+      try {
+        // Get study plan ID from config
+        const config = localStorage.getItem(`${courseId}_study_config`);
+        let studyPlanId = null;
+        if (config) {
+          try {
+            const parsed = JSON.parse(config);
+            studyPlanId = parsed.studyPlanId;
+          } catch (e) {}
+        }
 
-      // If this was the active course, clean active keys
-      const active = localStorage.getItem('active_course');
-      if (active === courseId) {
-        localStorage.removeItem('active_course');
-        localStorage.removeItem('custom_study_sections');
-        localStorage.removeItem('custom_quiz_questions');
-        localStorage.removeItem('custom_schedule_weeks');
-        localStorage.removeItem('study_config');
-        localStorage.removeItem('study_schedule_progress');
-        localStorage.removeItem('quiz_answers');
+        // Delete from API if study plan ID exists
+        if (studyPlanId) {
+          await studyPlansApi.delete(studyPlanId);
+        }
+
+        // Clear localStorage
+        localStorage.removeItem(`${courseId}_study_sections`);
+        localStorage.removeItem(`${courseId}_quiz_questions`);
+        localStorage.removeItem(`${courseId}_schedule_weeks`);
+        localStorage.removeItem(`${courseId}_study_config`);
+        localStorage.removeItem(`${courseId}_study_schedule_progress`);
+        localStorage.removeItem(`${courseId}_quiz_answers`);
+
+        // If this was the active course, clean active keys
+        const active = localStorage.getItem('active_course');
+        if (active === courseId) {
+          localStorage.removeItem('active_course');
+          localStorage.removeItem('custom_study_sections');
+          localStorage.removeItem('custom_quiz_questions');
+          localStorage.removeItem('custom_schedule_weeks');
+          localStorage.removeItem('study_config');
+          localStorage.removeItem('study_schedule_progress');
+          localStorage.removeItem('quiz_answers');
+        }
+
+        loadSavedPlans();
+      } catch (error) {
+        console.error('Error deleting study plan:', error);
+        alert('Erro ao excluir plano de estudo. Tente novamente.');
       }
-
-      loadSavedPlans();
     }
   };
 

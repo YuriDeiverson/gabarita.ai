@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { quizQuestions } from '../data/quizData';
 import { QuestionCategory, Question } from '../types';
 import { passages } from '../data/passagesData';
+import { quizProgressApi } from '../services/api';
 import { CheckCircle2, XCircle, RefreshCw, Award, Filter, Sparkles, AlertCircle, Info, ChevronRight, HelpCircle } from 'lucide-react';
 
 export default function QuizTab() {
@@ -41,11 +42,33 @@ export default function QuizTab() {
     localStorage.setItem('quiz_score_mode', scoreMode);
   }, [scoreMode]);
 
-  const handleAnswer = (questionId: number, option: 'Certo' | 'Errado') => {
+  const handleAnswer = async (questionId: number, option: 'Certo' | 'Errado') => {
+    const question = questions.find(q => q.id === questionId);
+    if (!question) return;
+
     setAnswers(prev => ({
       ...prev,
       [questionId]: option
     }));
+
+    // Save to API if study plan ID exists
+    const config = localStorage.getItem('study_config');
+    if (config) {
+      try {
+        const parsed = JSON.parse(config);
+        if (parsed.studyPlanId) {
+          const isCorrect = option === question.correct;
+          await quizProgressApi.create({
+            studyPlanId: parsed.studyPlanId,
+            questionId,
+            answer: option,
+            isCorrect
+          });
+        }
+      } catch (error) {
+        console.error('Error saving quiz progress:', error);
+      }
+    }
   };
 
   const togglePassage = (questionId: number) => {

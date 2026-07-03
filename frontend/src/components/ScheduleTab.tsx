@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { initialScheduleWeeks } from '../data/scheduleData';
+import { scheduleApi } from '../services/api';
 import { Calendar, CheckSquare, Clock, BookOpen, AlertTriangle, Play, HelpCircle, Trophy } from 'lucide-react';
 
 export default function ScheduleTab() {
@@ -71,7 +72,9 @@ export default function ScheduleTab() {
     localStorage.setItem('study_schedule_progress', JSON.stringify(progressState));
   }, [weeks]);
 
-  const toggleBlock = (weekId: string, blockId: string) => {
+  const toggleBlock = async (weekId: string, blockId: string) => {
+    const newDoneState = !weeks.find(w => w.id === weekId)?.blocks.find(b => b.id === blockId)?.done;
+
     setWeeks(prevWeeks => 
       prevWeeks.map(week => {
         if (week.id !== weekId) return week;
@@ -84,6 +87,23 @@ export default function ScheduleTab() {
         };
       })
     );
+
+    // Save to API if study plan ID exists
+    const config = localStorage.getItem('study_config');
+    if (config) {
+      try {
+        const parsed = JSON.parse(config);
+        if (parsed.studyPlanId) {
+          await scheduleApi.saveProgress({
+            studyPlanId: parsed.studyPlanId,
+            blockId,
+            isCompleted: newDoneState
+          });
+        }
+      } catch (error) {
+        console.error('Error saving schedule progress:', error);
+      }
+    }
   };
 
   // Calculate dynamic info tags

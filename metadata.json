@@ -1,0 +1,6 @@
+{
+  "name": "Gabarita SEPLAG/AL",
+  "description": "Portal de reta final com resumos de Pareto (80/20) para Português, TI Básica, Ética, Alagoas e Conhecimentos Específicos de Análise de Sistemas. Inclui simulador interativo de 50 questões de Certo ou Errado estilo CEBRASPE com justificativas detalhadas, e cronograma de estudos ativo com persistência local.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

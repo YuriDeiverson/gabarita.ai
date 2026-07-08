@@ -30,7 +30,7 @@ export default function HomeTab({ onPlanGenerated }: HomeTabProps) {
   // Configuration States (loaded dynamically per course when configuring)
   const [examDate, setExamDate] = useState<string>('2026-08-15');
   const [selectedWeekdays, setSelectedWeekdays] = useState<number[]>([1, 2, 3, 4, 5]); // Monday to Friday
-  const [hoursPerDay, setHoursPerDay] = useState<number>(4);
+  const [hoursPerDayInput, setHoursPerDayInput] = useState<string>('4');
   const [selectedTopicIds, setSelectedTopicIds] = useState<string[]>([]);
 
   // List of active plans stats
@@ -142,6 +142,27 @@ const WEEKDAY_NUMBER_TO_NAME: { [key: number]: string } = {
     return calculateStudyDays(examDate, selectedWeekdays);
   }, [examDate, selectedWeekdays]);
 
+  const normalizedHoursPerDay = useMemo(() => {
+    const parsed = Number(hoursPerDayInput);
+    if (!Number.isFinite(parsed)) return 1;
+    return Math.min(24, Math.max(1, parsed));
+  }, [hoursPerDayInput]);
+
+  const handleHoursPerDayChange = (value: string) => {
+    if (value === '') {
+      setHoursPerDayInput('');
+      return;
+    }
+
+    const parsed = Number(value);
+    if (!Number.isFinite(parsed)) return;
+    setHoursPerDayInput(String(Math.min(24, Math.max(0, parsed))));
+  };
+
+  const commitHoursPerDay = () => {
+    setHoursPerDayInput(String(normalizedHoursPerDay));
+  };
+
   // Load configuration for a specific course to edit
   const handleOpenConfigure = (courseId: string) => {
     setSelectedCourse(courseId);
@@ -154,20 +175,20 @@ const WEEKDAY_NUMBER_TO_NAME: { [key: number]: string } = {
         const parsed = JSON.parse(savedConfigStr);
         setExamDate(parsed.examDate || '2026-08-15');
         setSelectedWeekdays(parsed.selectedWeekdays || [1, 2, 3, 4, 5]);
-        setHoursPerDay(parsed.hoursPerDay || 4);
+        setHoursPerDayInput(String(Math.max(1, parsed.hoursPerDay || 4)));
         setSelectedTopicIds(parsed.selectedTopics || config.topics.map(t => t.id));
       } catch (e) {
         // Fallbacks
         setExamDate('2026-08-15');
         setSelectedWeekdays([1, 2, 3, 4, 5]);
-        setHoursPerDay(4);
+        setHoursPerDayInput('4');
         setSelectedTopicIds(config.topics.map(t => t.id));
       }
     } else {
       // Defaults
       setExamDate('2026-08-15');
       setSelectedWeekdays([1, 2, 3, 4, 5]);
-      setHoursPerDay(4);
+      setHoursPerDayInput('4');
       setSelectedTopicIds(config.topics.map(t => t.id));
     }
     setScreen('configure');
@@ -202,6 +223,8 @@ const WEEKDAY_NUMBER_TO_NAME: { [key: number]: string } = {
       alert("Com as configurações escolhidas, não há dias de estudo entre hoje (02/07/2026) e o dia da prova!");
       return;
     }
+    const hoursPerDay = normalizedHoursPerDay;
+    setHoursPerDayInput(String(hoursPerDay));
 
     const today = new Date('2026-07-02');
     const exam = new Date(examDate);
@@ -639,13 +662,21 @@ const scheduleWeeks = scheduleResponse.scheduleWeeks; // <-- ADICIONAR ESSA LINH
                       <input
                         id="hours-per-day"
                         type="number"
+                        inputMode="numeric"
                         min="1"
                         max="24"
-                        value={hoursPerDay}
-                        onChange={(e) => setHoursPerDay(Math.min(24, Math.max(1, parseInt(e.target.value) || 0)))}
+                        step="1"
+                        value={hoursPerDayInput}
+                        aria-describedby="hours-per-day-help"
+                        aria-invalid={hoursPerDayInput !== '' && Number(hoursPerDayInput) < 1}
+                        onChange={(e) => handleHoursPerDayChange(e.target.value)}
+                        onBlur={commitHoursPerDay}
                         className="w-full bg-slate-50 border border-slate-200 rounded-lg py-2.5 pl-9 pr-3 text-xs focus:bg-white focus:ring-1 focus:ring-indigo-500 focus:border-transparent outline-none text-slate-700 font-mono font-bold"
                       />
                     </div>
+                    <p id="hours-per-day-help" className="text-[10px] text-slate-400">
+                      Mínimo de 1 hora por dia.
+                    </p>
                   </div>
 
                 </div>
@@ -769,11 +800,11 @@ const scheduleWeeks = scheduleResponse.scheduleWeeks; // <-- ADICIONAR ESSA LINH
                   </div>
                   <div>
                     <span className="text-slate-400 block font-bold">Carga Total Disponível:</span>
-                    <span className="text-sm font-extrabold text-emerald-400">{calculatedDays * hoursPerDay}h de estudo bruto</span>
+                    <span className="text-sm font-extrabold text-emerald-400">{calculatedDays * normalizedHoursPerDay}h de estudo bruto</span>
                   </div>
                   <div>
                     <span className="text-slate-400 block font-bold">Frequência Semanal:</span>
-                    <span className="text-white font-extrabold">{selectedWeekdays.length} dias por semana ({selectedWeekdays.length * hoursPerDay}h/semana)</span>
+                    <span className="text-white font-extrabold">{selectedWeekdays.length} dias por semana ({selectedWeekdays.length * normalizedHoursPerDay}h/semana)</span>
                   </div>
                   <div>
                     <span className="text-slate-400 block font-bold">Assuntos Selecionados:</span>

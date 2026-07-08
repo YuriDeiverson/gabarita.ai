@@ -624,15 +624,17 @@ export const COURSES_CONFIG: {
   }
 };
 
-// Programmatically append core topics to Journalism so they can be configured by the user
+// Add core topics to Journalism (Português, Inglês, TI Básica, Legislação, Alagoas)
 COURSES_CONFIG.jornalismo.topics.push(
   { id: 'portugues', title: 'Língua Portuguesa', category: 'Português', subtopics: ['Reescrita de Frases', 'Coesão Textual', 'Crase e Regência', 'Pontuação CEBRASPE'] },
   { id: 'ingles', title: 'Língua Inglesa', category: 'Língua Inglesa', subtopics: ['Compreensão de Textos', 'Conectores e Advérbios', 'Tempos Verbais', 'Vocabulário Técnico'] },
   { id: 'ti_basica', title: 'TI Básica', category: 'TI Básica', subtopics: ['Redes de Computadores', 'Segurança da Informação', 'Backup e Criptografia'] },
+  { id: 'marco_legal_cti', title: 'Marco Legal de CT&I', category: 'Ética e Compliance', subtopics: ['Constituição e EC 85/2015', 'Lei 10.973/2004 (Lei de Inovação)', 'Lei 13.243/2016', 'Decreto 9.283/2018', 'Encomenda Tecnológica (ETEC)'] },
+  { id: 'legislacao_especifica_fapeal', title: 'Legislações Específicas (FAPEAL)', category: 'Ética e Compliance', subtopics: ['Lei Delegada 48/2022', 'Lei 7.117/2009', 'Lei 6.527/2004', 'L.C. 20/2002 e 5/1990', 'Lei 5.247/1991 (RJU)', 'Decreto 4.137/2009'] },
   { id: 'alagoas', title: 'Conhecimentos de Alagoas', category: 'Conhecimentos de Alagoas', subtopics: ['Emancipação Política', 'Geografia de Alagoas', 'Ciclo do Açúcar e História'] }
 );
 
-// Programmatically append core study sections to Journalism so they can be integrated into study blocks and schedules
+// Add core study sections to Journalism (Português, Inglês, TI Básica, Legislação, Alagoas)
 COURSES_CONFIG.jornalismo.studySections.push(
   ...defaultSeplagSections.filter(section => ['portugues', 'ingles', 'ti', 'etica', 'alagoas', 'marco_legal_cti', 'legislacao_especifica_fapeal'].includes(section.id))
 );
@@ -684,12 +686,25 @@ export function generateCustomPlan(
     return categoriesToInclude.some(catTitle => 
       q.category.toLowerCase().includes(catTitle.toLowerCase()) || 
       catTitle.toLowerCase().includes(q.category.toLowerCase()) ||
-      ((course === 'seplag_informatica' || course === 'jornalismo') && q.category === 'TI Básica' && selectedTopicIds.includes('ti_basica')) ||
-      ((course === 'seplag_informatica' || course === 'jornalismo') && q.category === 'Língua Inglesa' && selectedTopicIds.includes('ingles')) ||
-      ((course === 'seplag_informatica' || course === 'jornalismo') && q.category === 'Português' && selectedTopicIds.includes('portugues')) ||
-      ((course === 'seplag_informatica' || course === 'jornalismo') && q.category === 'Ética e Compliance' && (selectedTopicIds.includes('etica') || selectedTopicIds.includes('marco_legal_cti') || selectedTopicIds.includes('legislacao_especifica_fapeal'))) ||
-      ((course === 'seplag_informatica' || course === 'jornalismo') && q.category === 'Conhecimentos de Alagoas' && selectedTopicIds.includes('alagoas')) ||
-      ((course === 'seplag_informatica' || course === 'jornalismo') && q.category === 'Conhecimentos Específicos' && (selectedTopicIds.includes('especificos_devops') || selectedTopicIds.includes('especificos_db')))
+      // SEPLAG-specific mappings
+      (course === 'seplag_informatica' && q.category === 'TI Básica' && selectedTopicIds.includes('ti_basica')) ||
+      (course === 'seplag_informatica' && q.category === 'Português' && selectedTopicIds.includes('portugues')) ||
+      (course === 'seplag_informatica' && q.category === 'Ética e Compliance' && (selectedTopicIds.includes('etica') || selectedTopicIds.includes('marco_legal_cti') || selectedTopicIds.includes('legislacao_especifica_fapeal'))) ||
+      (course === 'seplag_informatica' && q.category === 'Conhecimentos Específicos' && (selectedTopicIds.includes('especificos_devops') || selectedTopicIds.includes('especificos_db'))) ||
+      // Journalism-specific mappings
+      (course === 'jornalismo' && q.category === 'Conhecimentos Específicos - Jornalismo' && (
+        selectedTopicIds.includes('teorias_com') ||
+        selectedTopicIds.includes('redacao_jornalistica') ||
+        selectedTopicIds.includes('assessoria_imprensa') ||
+        selectedTopicIds.includes('jornalismo_digital') ||
+        selectedTopicIds.includes('divulgacao_cientifica') ||
+        selectedTopicIds.includes('etica_imprensa')
+      )) ||
+      (course === 'jornalismo' && q.category === 'Português' && selectedTopicIds.includes('portugues')) ||
+      (course === 'jornalismo' && q.category === 'Língua Inglesa' && selectedTopicIds.includes('ingles')) ||
+      (course === 'jornalismo' && q.category === 'TI Básica' && selectedTopicIds.includes('ti_basica')) ||
+      (course === 'jornalismo' && q.category === 'Ética e Compliance' && (selectedTopicIds.includes('marco_legal_cti') || selectedTopicIds.includes('legislacao_especifica_fapeal'))) ||
+      (course === 'jornalismo' && q.category === 'Conhecimentos de Alagoas' && selectedTopicIds.includes('alagoas'))
     );
   });
 

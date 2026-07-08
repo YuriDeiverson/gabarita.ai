@@ -4,8 +4,8 @@ import { deduplicateQuestions } from './questionGenerator';
 
 // Helper to map fine-grained subjects to the official QuestionCategory union type
 const mapCategory = (cat: string): QuestionCategory => {
-  if (cat === 'Ética e Compliance') return 'Ética e Compliance';
-  return 'Conhecimentos Específicos';
+  // All journalism-specific topics map to Conhecimentos Específicos - Jornalismo
+  return 'Conhecimentos Específicos - Jornalismo';
 };
 
 // High-quality hand-crafted base questions for Journalism
@@ -177,6 +177,590 @@ const baseJournalismQuestions: {
     explanation: 'A publicação espontânea de relatórios e guias no site institui transparência ATIVA. A transparência passiva ocorre quando a informação é fornecida após solicitação do cidadão.',
     reference: 'Lei de Acesso à Informação (LAI)'
   }
+];
+
+const supplementalJournalismQuestions: {
+  category: string;
+  text: string;
+  correct: 'Certo' | 'Errado';
+  explanation: string;
+  reference?: string;
+}[] = [
+  {
+    category: 'História do Jornalismo',
+    text: '[História do Jornalismo] A imprensa periódica moderna consolidou-se a partir da combinação entre tecnologias de impressão, circulação urbana de mercadorias, alfabetização crescente e formação de públicos leitores.',
+    correct: 'Certo',
+    explanation: 'O jornalismo não nasce apenas da técnica gráfica: ele depende também de condições sociais, econômicas e culturais que criam demanda por informação regular.',
+    reference: 'História da Imprensa'
+  },
+  {
+    category: 'História do Jornalismo',
+    text: '[História do Jornalismo] A Gazeta do Rio de Janeiro, criada em 1808, foi um jornal de oposição radical à monarquia portuguesa instalada no Brasil.',
+    correct: 'Errado',
+    explanation: 'A Gazeta do Rio de Janeiro era ligada à Impressão Régia e tinha caráter oficial, distante de uma imprensa oposicionista autônoma.',
+    reference: 'Imprensa no Brasil'
+  },
+  {
+    category: 'História do Jornalismo',
+    text: '[História do Jornalismo] O Correio Braziliense, editado por Hipólito da Costa em Londres, circulou no início do século XIX com críticas à administração portuguesa e influência no debate público brasileiro.',
+    correct: 'Certo',
+    explanation: 'Embora produzido fora do Brasil, o periódico teve papel relevante na formação de uma esfera pública crítica sobre temas políticos e administrativos.',
+    reference: 'Correio Braziliense'
+  },
+  {
+    category: 'História do Jornalismo',
+    text: '[História do Jornalismo] O rádio reforçou a instantaneidade da notícia ao permitir transmissões ao vivo e cobertura de acontecimentos em tempo real.',
+    correct: 'Certo',
+    explanation: 'A linguagem sonora reduziu a distância temporal entre acontecimento e divulgação, especialmente em coberturas esportivas, políticas e de utilidade pública.',
+    reference: 'Radiojornalismo'
+  },
+  {
+    category: 'História do Jornalismo',
+    text: '[História do Jornalismo] A televisão jornalística dispensa a apuração textual, pois a imagem exibida sempre fala por si e elimina a necessidade de contextualização.',
+    correct: 'Errado',
+    explanation: 'A imagem é poderosa, mas precisa de apuração, texto, edição e contexto para evitar interpretações incompletas ou enganosas.',
+    reference: 'Telejornalismo'
+  },
+  {
+    category: 'Produção da Notícia',
+    text: '[Produção da Notícia] Proximidade, atualidade, relevância, conflito, impacto e novidade são exemplos de critérios de noticiabilidade utilizados para selecionar fatos jornalísticos.',
+    correct: 'Certo',
+    explanation: 'Esses valores ajudam a redação a decidir quais acontecimentos merecem cobertura e destaque editorial.',
+    reference: 'Critérios de Noticiabilidade'
+  },
+  {
+    category: 'Produção da Notícia',
+    text: '[Produção da Notícia] A existência de uma fonte única e interessada é suficiente para publicar uma denúncia, desde que ela forneça declaração em on.',
+    correct: 'Errado',
+    explanation: 'Declaração identificada não elimina a necessidade de checagem, contraditório e busca por documentos ou fontes independentes.',
+    reference: 'Apuração Jornalística'
+  },
+  {
+    category: 'Produção da Notícia',
+    text: '[Produção da Notícia] Informação em off pode orientar a investigação jornalística, mas seu uso exige acordo claro com a fonte e confirmação cuidadosa por outros meios.',
+    correct: 'Certo',
+    explanation: 'O off não autoriza publicação descuidada; ele funciona como pista ou contexto e deve ser manejado com responsabilidade ética.',
+    reference: 'Fontes Jornalísticas'
+  },
+  {
+    category: 'Produção da Notícia',
+    text: '[Produção da Notícia] Entrevistas jornalísticas devem combinar escuta ativa, perguntas abertas, repertório prévio sobre o tema e capacidade de formular repreguntas.',
+    correct: 'Certo',
+    explanation: 'A entrevista qualificada não é leitura mecânica de roteiro; exige preparo e reação crítica às respostas dadas.',
+    reference: 'Técnicas de Entrevista'
+  },
+  {
+    category: 'Produção da Notícia',
+    text: '[Produção da Notícia] A rotina produtiva da redação inclui etapas como reunião de pauta, apuração, redação, edição, revisão, publicação e eventual atualização.',
+    correct: 'Certo',
+    explanation: 'Essas fases organizam o fluxo de produção e reduzem erros em ambientes marcados por prazos curtos.',
+    reference: 'Rotina de Redação'
+  },
+  {
+    category: 'Gêneros Jornalísticos',
+    text: '[Gêneros Jornalísticos] A nota jornalística é um texto breve, geralmente usado para registrar informação objetiva de menor extensão ou atualização rápida.',
+    correct: 'Certo',
+    explanation: 'A nota privilegia concisão e objetividade, sem o aprofundamento típico de uma reportagem.',
+    reference: 'Nota Jornalística'
+  },
+  {
+    category: 'Gêneros Jornalísticos',
+    text: '[Gêneros Jornalísticos] A notícia, por sua natureza informativa, deve priorizar fatos verificáveis, atualidade e resposta às informações essenciais do acontecimento.',
+    correct: 'Certo',
+    explanation: 'A notícia é gênero informativo e organiza os dados centrais do fato de modo claro e direto.',
+    reference: 'Notícia'
+  },
+  {
+    category: 'Gêneros Jornalísticos',
+    text: '[Gêneros Jornalísticos] A reportagem admite apuração mais longa, contextualização, múltiplas fontes e tratamento interpretativo mais amplo que a notícia factual.',
+    correct: 'Certo',
+    explanation: 'A reportagem aprofunda causas, consequências e personagens, sem abandonar o compromisso factual.',
+    reference: 'Reportagem'
+  },
+  {
+    category: 'Gêneros Jornalísticos',
+    text: '[Gêneros Jornalísticos] O editorial expressa opinião pessoal de um repórter, sem vínculo com a posição institucional do veículo.',
+    correct: 'Errado',
+    explanation: 'O editorial representa a opinião institucional do veículo ou empresa jornalística.',
+    reference: 'Editorial'
+  },
+  {
+    category: 'Gêneros Jornalísticos',
+    text: '[Gêneros Jornalísticos] O artigo de opinião é geralmente assinado e apresenta argumentação autoral sobre tema de interesse público.',
+    correct: 'Certo',
+    explanation: 'Diferentemente da notícia, o artigo explicita ponto de vista e usa argumentos para sustentá-lo.',
+    reference: 'Artigo de Opinião'
+  },
+  {
+    category: 'Gêneros Jornalísticos',
+    text: '[Gêneros Jornalísticos] A crônica jornalística pode tratar fatos cotidianos com linguagem subjetiva, literária e interpretativa.',
+    correct: 'Certo',
+    explanation: 'A crônica aproxima jornalismo e literatura, valorizando observação, estilo e reflexão sobre o cotidiano.',
+    reference: 'Crônica'
+  },
+  {
+    category: 'Gêneros Jornalísticos',
+    text: '[Gêneros Jornalísticos] A resenha crítica combina apresentação de uma obra ou produto cultural com avaliação fundamentada.',
+    correct: 'Certo',
+    explanation: 'Resenhar não é apenas resumir: envolve análise, juízo crítico e contextualização.',
+    reference: 'Resenha'
+  },
+  {
+    category: 'Gêneros Jornalísticos',
+    text: '[Gêneros Jornalísticos] O perfil jornalístico busca retratar uma personagem real por meio de trajetória, comportamento, contexto social e depoimentos.',
+    correct: 'Certo',
+    explanation: 'O perfil constrói uma compreensão mais humana e contextualizada da personagem.',
+    reference: 'Perfil Jornalístico'
+  },
+  {
+    category: 'Jornalismo Institucional',
+    text: '[Jornalismo Institucional] Comunicação institucional procura fortalecer identidade, imagem e reputação da organização perante seus públicos.',
+    correct: 'Certo',
+    explanation: 'Ela trabalha a percepção pública da instituição e sua coerência simbólica com missão, valores e práticas.',
+    reference: 'Comunicação Institucional'
+  },
+  {
+    category: 'Jornalismo Institucional',
+    text: '[Jornalismo Institucional] Comunicação organizacional restringe-se ao relacionamento com jornalistas e exclui comunicação interna, administrativa e mercadológica.',
+    correct: 'Errado',
+    explanation: 'A comunicação organizacional é mais ampla e integra várias dimensões comunicacionais da organização.',
+    reference: 'Comunicação Organizacional'
+  },
+  {
+    category: 'Jornalismo Institucional',
+    text: '[Jornalismo Institucional] O assessor de imprensa deve facilitar o acesso a informações de interesse público sem usurpar a autonomia editorial dos veículos.',
+    correct: 'Certo',
+    explanation: 'A assessoria sugere pautas, organiza informações e orienta fontes; a decisão de publicar cabe à redação.',
+    reference: 'Assessoria de Imprensa'
+  },
+  {
+    category: 'Produtos de Assessoria',
+    text: '[Produtos de Assessoria] Release é texto produzido pela assessoria com linguagem jornalística para divulgar informação, sugerir pauta ou subsidiar cobertura.',
+    correct: 'Certo',
+    explanation: 'O release precisa ter gancho noticioso, dados verificáveis, fonte identificada e redação objetiva.',
+    reference: 'Release'
+  },
+  {
+    category: 'Produtos de Assessoria',
+    text: '[Produtos de Assessoria] Press kit é o conjunto de materiais de apoio entregues à imprensa, podendo reunir release, fotos, dados, contatos, currículo de porta-vozes e documentos.',
+    correct: 'Certo',
+    explanation: 'Sua função é facilitar o trabalho do repórter e qualificar a cobertura de eventos ou anúncios.',
+    reference: 'Press Kit'
+  },
+  {
+    category: 'Produtos de Assessoria',
+    text: '[Produtos de Assessoria] Mailing de imprensa é sinônimo de clipping, pois ambos designam a coleta de matérias já publicadas.',
+    correct: 'Errado',
+    explanation: 'Mailing é cadastro de contatos; clipping é monitoramento e registro de publicações.',
+    reference: 'Mailing e Clipping'
+  },
+  {
+    category: 'Produtos de Assessoria',
+    text: '[Produtos de Assessoria] House organ é publicação institucional voltada a públicos de interesse, especialmente o público interno, com notícias e informações da organização.',
+    correct: 'Certo',
+    explanation: 'Pode aparecer como jornal interno, revista, boletim, intranet ou newsletter institucional.',
+    reference: 'House Organ'
+  },
+  {
+    category: 'Produtos de Assessoria',
+    text: '[Produtos de Assessoria] Clipping permite acompanhar a presença da instituição na mídia e avaliar repercussão, visibilidade e temas sensíveis.',
+    correct: 'Certo',
+    explanation: 'O clipping serve como insumo para diagnóstico de imagem e planejamento de comunicação.',
+    reference: 'Clipping'
+  },
+  {
+    category: 'Comunicação Pública',
+    text: '[Comunicação Pública] Comunicação pública deve priorizar interesse público, cidadania, transparência e prestação de contas, não promoção pessoal de autoridades.',
+    correct: 'Certo',
+    explanation: 'Em órgãos públicos, a comunicação deve respeitar impessoalidade e utilidade social da informação.',
+    reference: 'Comunicação Pública'
+  },
+  {
+    category: 'Comunicação Pública',
+    text: '[Comunicação Pública] Linguagem cidadã é aquela que traduz termos técnicos e burocráticos para linguagem clara, acessível e compreensível ao cidadão.',
+    correct: 'Certo',
+    explanation: 'Seu objetivo é ampliar o acesso real à informação e aos serviços públicos.',
+    reference: 'Linguagem Cidadã'
+  },
+  {
+    category: 'Comunicação Pública',
+    text: '[Comunicação Pública] Transparência ativa ocorre quando o órgão público divulga espontaneamente informações de interesse coletivo, independentemente de solicitação.',
+    correct: 'Certo',
+    explanation: 'Portais de transparência, relatórios, editais e dados abertos são exemplos comuns de transparência ativa.',
+    reference: 'LAI'
+  },
+  {
+    category: 'Comunicação Pública',
+    text: '[Comunicação Pública] Prestação de contas é incompatível com comunicação institucional, pois relatórios públicos devem permanecer restritos à administração interna.',
+    correct: 'Errado',
+    explanation: 'A prestação de contas é dimensão essencial da comunicação pública e fortalece controle social e confiança.',
+    reference: 'Accountability Pública'
+  },
+  {
+    category: 'Editoração e Projeto Gráfico',
+    text: '[Editoração e Projeto Gráfico] Mancha gráfica é a área efetivamente ocupada por texto, imagens e elementos gráficos dentro da página.',
+    correct: 'Certo',
+    explanation: 'A mancha se relaciona à composição visual, às margens e ao equilíbrio entre cheios e vazios.',
+    reference: 'Mancha Gráfica'
+  },
+  {
+    category: 'Editoração e Projeto Gráfico',
+    text: '[Editoração e Projeto Gráfico] Retranca é uma palavra ou código usado internamente para identificar pauta, matéria, arquivo ou conteúdo em produção.',
+    correct: 'Certo',
+    explanation: 'A retranca organiza o fluxo editorial e ajuda a localizar materiais no fechamento.',
+    reference: 'Retranca'
+  },
+  {
+    category: 'Editoração e Projeto Gráfico',
+    text: '[Editoração e Projeto Gráfico] Tipologia diz respeito ao estudo e uso de tipos e fontes, incluindo legibilidade, hierarquia e adequação ao projeto visual.',
+    correct: 'Certo',
+    explanation: 'A escolha tipográfica interfere diretamente na leitura e na identidade gráfica da publicação.',
+    reference: 'Tipologia'
+  },
+  {
+    category: 'Editoração e Projeto Gráfico',
+    text: '[Editoração e Projeto Gráfico] Diagramação consiste apenas em preencher espaços vazios da página, sem relação com hierarquia da informação.',
+    correct: 'Errado',
+    explanation: 'Diagramar é organizar textos, títulos, imagens, brancos, chamadas e hierarquias visuais.',
+    reference: 'Diagramação'
+  },
+  {
+    category: 'Editoração e Projeto Gráfico',
+    text: '[Editoração e Projeto Gráfico] Preparação de originais envolve padronização, revisão, conferência de elementos textuais e adequação do material antes da editoração.',
+    correct: 'Certo',
+    explanation: 'Essa etapa evita inconsistências e facilita o trabalho posterior de edição e composição.',
+    reference: 'Preparação de Originais'
+  },
+  {
+    category: 'Comunicação Digital',
+    text: '[Comunicação Digital] Alcance corresponde ao número de usuários únicos expostos a determinado conteúdo, enquanto impressões indicam o total de exibições.',
+    correct: 'Certo',
+    explanation: 'Uma mesma pessoa pode gerar várias impressões, mas conta uma vez no alcance.',
+    reference: 'Métricas Digitais'
+  },
+  {
+    category: 'Comunicação Digital',
+    text: '[Comunicação Digital] Conversão é a realização de uma ação desejada pelo usuário, como inscrição, download, cadastro, compra ou envio de formulário.',
+    correct: 'Certo',
+    explanation: 'A conversão mede se a comunicação levou o público a cumprir o objetivo definido.',
+    reference: 'Conversão'
+  },
+  {
+    category: 'Comunicação Digital',
+    text: '[Comunicação Digital] KPI é qualquer dado disponível em uma plataforma, ainda que não esteja relacionado aos objetivos estratégicos da ação.',
+    correct: 'Errado',
+    explanation: 'KPI é indicador-chave de desempenho; deve estar ligado a metas relevantes, e não a qualquer número solto.',
+    reference: 'KPI'
+  },
+  {
+    category: 'Comunicação Digital',
+    text: '[Comunicação Digital] CTR é uma taxa calculada pela relação entre cliques e impressões, útil para avaliar a atratividade de links, anúncios ou chamadas.',
+    correct: 'Certo',
+    explanation: 'Quanto maior o CTR, maior a proporção de pessoas que clicaram após visualizar a peça.',
+    reference: 'CTR'
+  },
+  {
+    category: 'LAI e LGPD',
+    text: '[LAI e LGPD] A LAI estabelece a publicidade como regra e o sigilo como exceção no acesso a informações públicas.',
+    correct: 'Certo',
+    explanation: 'A Lei de Acesso à Informação fortalece transparência, controle social e dever estatal de fornecer informações.',
+    reference: 'Lei nº 12.527/2011'
+  },
+  {
+    category: 'LAI e LGPD',
+    text: '[LAI e LGPD] Pela LAI, informações pessoais relativas à intimidade, vida privada, honra e imagem podem receber proteção de acesso, observadas as regras legais.',
+    correct: 'Certo',
+    explanation: 'Transparência pública convive com proteção de dados pessoais e outros sigilos legalmente previstos.',
+    reference: 'Lei nº 12.527/2011'
+  },
+  {
+    category: 'LAI e LGPD',
+    text: '[LAI e LGPD] A LGPD permite o tratamento ilimitado de dados pessoais por órgãos públicos, ainda que sem finalidade pública específica.',
+    correct: 'Errado',
+    explanation: 'O poder público deve observar finalidade pública, interesse público, transparência, necessidade e base legal.',
+    reference: 'Lei nº 13.709/2018'
+  },
+  {
+    category: 'LAI e LGPD',
+    text: '[LAI e LGPD] Dado pessoal sensível inclui informações como origem racial ou étnica, convicção religiosa, opinião política, saúde e dado biométrico.',
+    correct: 'Certo',
+    explanation: 'A LGPD confere maior proteção a dados que podem gerar discriminação ou riscos relevantes ao titular.',
+    reference: 'Lei nº 13.709/2018'
+  },
+  {
+    category: 'CT&I',
+    text: '[CT&I] Sistemas de inovação envolvem redes de instituições, empresas, governo e atores sociais que produzem, difundem e aplicam conhecimento tecnológico.',
+    correct: 'Certo',
+    explanation: 'A inovação é vista como processo sistêmico, dependente de interação e aprendizagem entre agentes.',
+    reference: 'Sistemas de Inovação'
+  },
+  {
+    category: 'CT&I',
+    text: '[CT&I] A hélice tríplice descreve a interação entre universidade, governo e empresas como base para ambientes inovadores.',
+    correct: 'Certo',
+    explanation: 'O modelo destaca cooperação entre produção científica, políticas públicas e aplicação econômica do conhecimento.',
+    reference: 'Hélice Tríplice'
+  },
+  {
+    category: 'CT&I',
+    text: '[CT&I] Incubadoras apoiam empreendimentos em estágio inicial, oferecendo suporte gerencial, infraestrutura, mentoria e conexão com redes.',
+    correct: 'Certo',
+    explanation: 'Elas reduzem fragilidades iniciais e aumentam a chance de sobrevivência de negócios inovadores.',
+    reference: 'Incubadoras'
+  },
+  {
+    category: 'CT&I',
+    text: '[CT&I] Aceleradoras costumam apoiar negócios inovadores por período limitado e intensivo, com mentoria, conexões e, em alguns casos, investimento.',
+    correct: 'Certo',
+    explanation: 'Seu foco é tração, escala, validação de modelo e aproximação com mercado e investidores.',
+    reference: 'Aceleradoras'
+  },
+  {
+    category: 'CT&I',
+    text: '[CT&I] Living labs são ambientes de inovação fechados ao usuário final, baseados apenas em testes laboratoriais controlados.',
+    correct: 'Errado',
+    explanation: 'Living labs valorizam cocriação e testes em contexto real, com participação ativa de usuários.',
+    reference: 'Living Labs'
+  },
+  {
+    category: 'CT&I',
+    text: '[CT&I] Prospecção tecnológica busca identificar tendências, oportunidades, ameaças e trajetórias futuras de tecnologias ou setores.',
+    correct: 'Certo',
+    explanation: 'Ela subsidia planejamento estratégico, políticas de inovação e decisões de investimento.',
+    reference: 'Prospecção Tecnológica'
+  },
+  {
+    category: 'CT&I',
+    text: '[CT&I] Bibliometria aplica métodos quantitativos ao estudo de publicações, citações, autores, periódicos e redes de produção científica.',
+    correct: 'Certo',
+    explanation: 'É ferramenta importante para mapear desempenho, colaboração e impacto da ciência.',
+    reference: 'Bibliometria'
+  },
+  {
+    category: 'CT&I',
+    text: '[CT&I] O índice H considera simultaneamente produtividade e impacto, pois relaciona quantidade de publicações e número de citações.',
+    correct: 'Certo',
+    explanation: 'Um índice H igual a 20 indica 20 trabalhos com pelo menos 20 citações cada.',
+    reference: 'Índice H'
+  },
+  {
+    category: 'CT&I',
+    text: '[CT&I] O fator de impacto mede diretamente a qualidade absoluta de cada artigo individual, dispensando leitura crítica do conteúdo.',
+    correct: 'Errado',
+    explanation: 'O fator de impacto é métrica agregada de periódico e não substitui avaliação qualitativa de artigos específicos.',
+    reference: 'Fator de Impacto'
+  },
+  {
+    category: 'CT&I',
+    text: '[CT&I] ICTs são instituições dedicadas à pesquisa científica, desenvolvimento tecnológico ou inovação, podendo atuar em parceria com empresas e governo.',
+    correct: 'Certo',
+    explanation: 'As ICTs são atores centrais do ecossistema de CT&I e da transferência de conhecimento.',
+    reference: 'ICTs'
+  }
+];
+
+const expandedRequestedJournalismQuestions: typeof supplementalJournalismQuestions = [
+  ...[
+    ['A prensa de tipos móveis ampliou a circulação de impressos e reduziu custos de reprodução textual.', 'Certo', 'A mecanização da impressão permitiu maior escala de produção e favoreceu a formação de mercados leitores.'],
+    ['Os primeiros periódicos modernos surgiram sem relação com comércio, correios, portos ou circulação urbana.', 'Errado', 'A imprensa periódica se fortaleceu em ambientes de circulação de mercadorias, cartas, rumores políticos e informação econômica.'],
+    ['A instalação da Impressão Régia em 1808 marcou a autorização oficial da atividade tipográfica no Brasil.', 'Certo', 'A chegada da Corte portuguesa rompeu a proibição colonial de tipografias e possibilitou publicações oficiais.'],
+    ['A imprensa brasileira do século XIX foi marcada por jornais de opinião, panfletos políticos e forte atuação no debate público.', 'Certo', 'O jornalismo daquele período era frequentemente opinativo, partidário e ligado a disputas políticas.'],
+    ['A profissionalização do jornalismo no Brasil envolveu mudanças técnicas, empresariais e editoriais ao longo do século XX.', 'Certo', 'Empresas jornalísticas, rotinas industriais, publicidade, reportagem e edição moderna ajudaram a consolidar a profissão.'],
+    ['O rádio perdeu toda relevância jornalística após o surgimento da televisão.', 'Errado', 'O rádio manteve força pela mobilidade, baixo custo, rapidez e proximidade com audiências locais.'],
+    ['A linguagem radiofônica exige clareza, frases curtas e atenção à oralidade.', 'Certo', 'Como o ouvinte não relê a informação, o texto precisa ser imediatamente compreensível.'],
+    ['A televisão integrou imagem, som, texto e edição, alterando a forma de narrar acontecimentos jornalísticos.', 'Certo', 'O telejornalismo depende da combinação entre informação verbal, imagem, ritmo de edição e presença de apresentadores ou repórteres.'],
+    ['A internet intensificou a convergência ao reunir texto, áudio, vídeo, dados, hiperlinks e interação em ambientes digitais.', 'Certo', 'O jornalismo digital opera de forma multimídia, hipertextual, atualizável e participativa.'],
+    ['Na convergência jornalística, cada plataforma atua isoladamente e impede cooperação entre equipes.', 'Errado', 'Convergência pressupõe integração de rotinas, linguagens e canais, ainda que cada suporte preserve especificidades.'],
+    ['O webjornalismo facilitou atualização contínua e correção posterior de conteúdos, sem eliminar a responsabilidade da checagem prévia.', 'Certo', 'A possibilidade de atualizar não autoriza publicação precipitada de informação não verificada.'],
+    ['A imprensa alternativa brasileira teve importância em contextos de censura e restrição à liberdade de expressão.', 'Certo', 'Veículos alternativos historicamente serviram como espaços de crítica, resistência e circulação de informações fora do circuito dominante.']
+  ].map(([assertion, correct, explanation]) => ({
+    category: 'História do Jornalismo',
+    text: `[História do Jornalismo] ${assertion}`,
+    correct: correct as 'Certo' | 'Errado',
+    explanation,
+    reference: 'História do Jornalismo'
+  })),
+  ...[
+    ['Valor-notícia é atributo que aumenta a chance de um acontecimento ser selecionado e hierarquizado pela redação.', 'Certo', 'Valores-notícia orientam seleção, edição e destaque, ainda que não sejam regras matemáticas.'],
+    ['A atualidade é relevante, mas um fato recente sem interesse público pode não se justificar como notícia.', 'Certo', 'A noticiabilidade depende da combinação de atualidade com relevância, impacto, proximidade e outros critérios.'],
+    ['Impacto social é valor-notícia associado ao número de pessoas afetadas ou à intensidade das consequências de um fato.', 'Certo', 'Quanto maior o efeito coletivo de um acontecimento, maior tende a ser seu interesse jornalístico.'],
+    ['Proximidade jornalística pode ser geográfica, cultural, afetiva ou institucional.', 'Certo', 'O público tende a se interessar por fatos que dialogam com seu território, identidade ou realidade social.'],
+    ['Conflito é valor-notícia porque disputas políticas, jurídicas, econômicas ou sociais revelam tensões de interesse público.', 'Certo', 'O conflito ajuda a evidenciar divergências, responsabilidades e consequências coletivas.'],
+    ['A apuração termina quando o repórter recebe a primeira versão oficial sobre o fato.', 'Errado', 'A versão oficial é uma fonte, mas deve ser confrontada com documentos, dados, especialistas e partes afetadas.'],
+    ['Checagem envolve verificar nomes, datas, números, documentos, contexto e coerência das declarações.', 'Certo', 'Erros factuais pequenos podem comprometer credibilidade e gerar danos relevantes.'],
+    ['Confirmação cruzada significa buscar evidências independentes para sustentar uma informação sensível.', 'Certo', 'Dados críticos devem ser confirmados por fontes distintas, documentos ou registros verificáveis.'],
+    ['Fonte primária é aquela diretamente relacionada ao fato, documento, dado ou personagem investigado.', 'Certo', 'A fonte primária está mais próxima do acontecimento ou da informação original.'],
+    ['Fonte secundária substitui integralmente a apuração quando resume corretamente um fato.', 'Errado', 'Fontes secundárias ajudam a contextualizar, mas não dispensam verificação própria.'],
+    ['Fonte oficial pode fornecer dados relevantes, mas sua posição institucional deve ser considerada na análise crítica.', 'Certo', 'Fontes oficiais também têm interesses, limites e estratégias de comunicação.'],
+    ['Off the record significa que a informação pode ser publicada com nome, cargo e imagem da fonte.', 'Errado', 'Off pressupõe condição de reserva combinada com a fonte, exigindo cuidado na atribuição e uso.'],
+    ['On the record é a condição em que a fonte autoriza atribuição pública de sua declaração.', 'Certo', 'Nesse caso, a fala pode ser identificada e responsabilizada.'],
+    ['Em entrevista, pergunta indutiva pode direcionar artificialmente a resposta e empobrecer a apuração.', 'Certo', 'Perguntas que já carregam a resposta podem reduzir espontaneidade e rigor informativo.'],
+    ['A pauta jornalística orienta a apuração, mas pode ser reformulada diante de novos fatos.', 'Certo', 'A pauta é ponto de partida, não roteiro imutável.'],
+    ['A edição jornalística deve hierarquizar informações, eliminar ambiguidades e preservar o sentido factual apurado.', 'Certo', 'Editar não é distorcer: é organizar com clareza, precisão e responsabilidade.'],
+    ['O contraditório é dispensável quando a denúncia parece moralmente evidente para a redação.', 'Errado', 'Ouvir o lado citado é prática fundamental de justiça, precisão e ética jornalística.'],
+    ['Embargo de informação é acordo pelo qual uma fonte antecipa dados com publicação permitida apenas após horário ou data combinados.', 'Certo', 'Embargos são comuns em relatórios, pesquisas e anúncios, mas devem ser avaliados editorialmente.']
+  ].map(([assertion, correct, explanation]) => ({
+    category: 'Produção da Notícia',
+    text: `[Produção da Notícia] ${assertion}`,
+    correct: correct as 'Certo' | 'Errado',
+    explanation,
+    reference: 'Produção da Notícia'
+  })),
+  ...[
+    ['A chamada de capa deve atrair o leitor sem falsear o conteúdo da matéria.', 'Certo', 'Chamadas eficazes são sintéticas e atrativas, mas precisam manter fidelidade ao texto.'],
+    ['A manchete é o título de maior destaque em uma edição ou página.', 'Certo', 'Ela hierarquiza a notícia considerada principal pelo veículo naquele espaço editorial.'],
+    ['O título jornalístico deve sempre ser enigmático, mesmo que reduza a compreensão imediata do fato.', 'Errado', 'Títulos informativos valorizam clareza, precisão e relevância.'],
+    ['A legenda contextualiza imagem, identifica elementos relevantes e pode acrescentar informação jornalística.', 'Certo', 'Legenda não é mera decoração: ajuda o leitor a compreender foto, gráfico ou ilustração.'],
+    ['O box é recurso editorial usado para destacar informação complementar, serviço, cronologia, dados ou contexto.', 'Certo', 'Boxes organizam conteúdos laterais e facilitam leitura escaneável.'],
+    ['A entrevista em formato pingue-pongue preserva a sequência de perguntas e respostas.', 'Certo', 'Esse formato evidencia a fala do entrevistado e a condução do entrevistador.'],
+    ['O comentário é gênero opinativo que interpreta fatos e apresenta avaliação do comentarista.', 'Certo', 'Diferente da notícia, o comentário explicita análise e ponto de vista.'],
+    ['A coluna é espaço periódico, geralmente assinado, com estilo e recorte temático próprios.', 'Certo', 'Colunas criam vínculo de autoria e regularidade com o público.'],
+    ['A crítica cultural avalia obras, espetáculos ou produtos culturais com critérios argumentativos.', 'Certo', 'Ela combina informação, repertório e julgamento fundamentado.'],
+    ['A reportagem investigativa limita-se a reproduzir releases enviados por assessorias.', 'Errado', 'Ela exige apuração autônoma, documentos, fontes diversas e verificação rigorosa.'],
+    ['O obituário jornalístico pode informar a morte de uma pessoa e contextualizar sua trajetória pública.', 'Certo', 'O gênero registra falecimento e relevância social, profissional ou histórica da personagem.'],
+    ['O serviço jornalístico oferece informação útil ao público, como horários, documentos exigidos, prazos e orientações.', 'Certo', 'É gênero voltado à utilidade prática e ao acesso a direitos ou atividades.'],
+    ['A errata reconhece e corrige erro publicado anteriormente pelo veículo.', 'Certo', 'A correção transparente preserva credibilidade e responsabilidade editorial.'],
+    ['O infográfico jornalístico organiza visualmente dados, processos ou comparações para facilitar compreensão.', 'Certo', 'Infográficos combinam informação, visualização e síntese.'],
+    ['O podcast jornalístico é necessariamente opinativo e não pode assumir formato informativo.', 'Errado', 'Podcasts podem ser noticiosos, investigativos, explicativos, narrativos, opinativos ou de entrevista.'],
+    ['A newsletter jornalística pode funcionar como curadoria periódica de conteúdos e relacionamento com leitores.', 'Certo', 'Newsletters organizam seleção editorial e fortalecem vínculo direto com a audiência.'],
+    ['A nota oficial é texto institucional que apresenta posição formal de uma organização sobre determinado fato.', 'Certo', 'Ela expressa posicionamento autorizado e deve ser clara, objetiva e verificável.'],
+    ['A fotolegenda combina imagem e texto curto, podendo constituir unidade informativa autônoma.', 'Certo', 'Em alguns casos, foto e legenda bastam para transmitir o núcleo informativo.'],
+    ['A análise jornalística busca explicar causas, consequências e conexões de um fato, sem se confundir com boato ou especulação livre.', 'Certo', 'A análise deve se apoiar em dados, contexto e conhecimento especializado.'],
+    ['O dossiê jornalístico reúne materiais e informações sobre tema complexo para organizar compreensão aprofundada.', 'Certo', 'Dossiês sistematizam histórico, documentos, personagens, dados e contexto.']
+  ].map(([assertion, correct, explanation]) => ({
+    category: 'Gêneros Jornalísticos',
+    text: `[Gêneros Jornalísticos] ${assertion}`,
+    correct: correct as 'Certo' | 'Errado',
+    explanation,
+    reference: 'Gêneros Jornalísticos'
+  })),
+  ...[
+    ['A comunicação institucional deve alinhar discurso público, identidade organizacional e práticas efetivas da instituição.', 'Certo', 'Reputação depende de coerência entre o que a organização diz e o que faz.'],
+    ['A comunicação interna é irrelevante para a imagem institucional, pois não afeta públicos externos.', 'Errado', 'Colaboradores também são públicos estratégicos e influenciam clima, reputação e atendimento.'],
+    ['Público interno pode incluir servidores, empregados, terceirizados, estagiários e gestores.', 'Certo', 'São grupos que vivenciam diretamente a rotina e a cultura organizacional.'],
+    ['Público externo pode incluir imprensa, sociedade, comunidade científica, fornecedores, governo, usuários e entidades parceiras.', 'Certo', 'A organização se relaciona com múltiplos públicos fora de sua estrutura interna.'],
+    ['O assessor deve preparar porta-vozes, organizar informações e orientar relacionamento com a imprensa.', 'Certo', 'Esse papel combina técnica jornalística, estratégia institucional e responsabilidade informativa.'],
+    ['Assessoria pública pode promover pessoalmente autoridades em peças oficiais sem violar impessoalidade.', 'Errado', 'Comunicação pública deve focar políticas, serviços e interesse coletivo, não culto pessoal a gestores.'],
+    ['Media training prepara fontes para entrevistas, coletivas e situações de crise.', 'Certo', 'O treinamento reduz improviso, melhora clareza e ajuda o porta-voz a respeitar limites institucionais.'],
+    ['Plano de comunicação define objetivos, públicos, mensagens, canais, cronograma, responsáveis e indicadores.', 'Certo', 'Planejamento evita ações dispersas e permite avaliação de resultados.'],
+    ['Gestão de crise exige rapidez, transparência possível, centralização de informações e monitoramento de repercussão.', 'Certo', 'Crises mal comunicadas ampliam boatos e danos reputacionais.'],
+    ['A comunicação organizacional integrada busca coerência entre canais internos, externos, administrativos e digitais.', 'Certo', 'Integração reduz ruídos e fortalece consistência institucional.'],
+    ['Endomarketing e comunicação interna são sinônimos perfeitos em qualquer contexto acadêmico.', 'Errado', 'Endomarketing é uma vertente voltada a engajamento interno; comunicação interna é campo mais amplo.'],
+    ['A identidade institucional reúne elementos como missão, valores, linguagem, símbolos, conduta e posicionamento.', 'Certo', 'Identidade não se resume a logotipo; inclui modos de agir e se apresentar.']
+  ].map(([assertion, correct, explanation]) => ({
+    category: 'Jornalismo Institucional',
+    text: `[Jornalismo Institucional] ${assertion}`,
+    correct: correct as 'Certo' | 'Errado',
+    explanation,
+    reference: 'Jornalismo Institucional'
+  })),
+  ...[
+    ['Newsletter institucional pode ser enviada periodicamente para informar públicos sobre ações, editais, resultados e serviços.', 'Certo', 'Ela organiza comunicação recorrente e segmentada com públicos de interesse.'],
+    ['Boletim é produto informativo geralmente breve, periódico e voltado à atualização objetiva de determinado público.', 'Certo', 'Boletins servem para comunicações rápidas, séries temáticas e acompanhamento de ações.'],
+    ['Relatório institucional pode apresentar atividades, indicadores, resultados e prestação de contas.', 'Certo', 'Relatórios documentam desempenho e apoiam transparência e memória organizacional.'],
+    ['Press kit deve conter apenas brindes promocionais, sem documentos ou informações jornalísticas.', 'Errado', 'O press kit deve priorizar material informativo útil à cobertura.'],
+    ['Mailing eficiente deve ser segmentado por editoria, veículo, localização, interesse e atualização dos contatos.', 'Certo', 'Segmentação evita envio inadequado e melhora relacionamento com jornalistas.'],
+    ['Clipping analítico pode ir além da coleta de links, avaliando tom, alcance, temas e veículos.', 'Certo', 'A análise qualifica o monitoramento e subsidia decisões de comunicação.'],
+    ['Release sem informação nova, sem interesse público e com excesso de autopromoção tende a ter baixo aproveitamento jornalístico.', 'Certo', 'Redações priorizam relevância, novidade e utilidade para seu público.'],
+    ['House organ deve obrigatoriamente circular em papel, sendo incompatível com intranet e formatos digitais.', 'Errado', 'O produto pode ser impresso ou digital, conforme estratégia e público.']
+  ].map(([assertion, correct, explanation]) => ({
+    category: 'Produtos de Assessoria',
+    text: `[Produtos de Assessoria] ${assertion}`,
+    correct: correct as 'Certo' | 'Errado',
+    explanation,
+    reference: 'Produtos de Assessoria'
+  })),
+  ...[
+    ['Interesse público não se confunde automaticamente com curiosidade pública.', 'Certo', 'Nem tudo que desperta curiosidade tem relevância social, coletiva ou cidadã.'],
+    ['Comunicação pública deve facilitar acesso a direitos, serviços, políticas, dados e canais de participação.', 'Certo', 'Seu foco é cidadania e utilidade coletiva.'],
+    ['Transparência passiva ocorre quando o órgão responde a pedido específico de informação feito pelo cidadão.', 'Certo', 'Ela complementa a transparência ativa prevista pela LAI.'],
+    ['Prestação de contas fortalece controle social ao tornar compreensíveis gastos, resultados e decisões públicas.', 'Certo', 'Accountability depende de informação acessível, tempestiva e verificável.'],
+    ['Linguagem cidadã elimina precisão técnica; por isso deve ser evitada em órgãos públicos.', 'Errado', 'Clareza não elimina precisão: traduz o necessário sem burocratês desnecessário.'],
+    ['Comunicação governamental e comunicação pública são sempre idênticas, pois ambas servem exclusivamente ao governante eleito.', 'Errado', 'Comunicação pública serve ao cidadão e ao Estado; comunicação governamental pode estar ligada à gestão, mas deve respeitar limites legais.'],
+    ['A publicidade institucional pública deve ter caráter educativo, informativo ou de orientação social.', 'Certo', 'A Constituição veda promoção pessoal em publicidade oficial.'],
+    ['Dados abertos favorecem transparência, reutilização social da informação e controle público.', 'Certo', 'Quando publicados em formato acessível e reutilizável, ampliam fiscalização e inovação cívica.']
+  ].map(([assertion, correct, explanation]) => ({
+    category: 'Comunicação Pública',
+    text: `[Comunicação Pública] ${assertion}`,
+    correct: correct as 'Certo' | 'Errado',
+    explanation,
+    reference: 'Comunicação Pública'
+  })),
+  ...[
+    ['Justificação total alinha o texto às margens esquerda e direita, podendo exigir cuidado com espaçamentos excessivos.', 'Certo', 'Textos justificados podem gerar rios tipográficos se a composição não for bem ajustada.'],
+    ['Alinhamento à esquerda costuma favorecer leitura contínua por manter espaçamento regular entre palavras.', 'Certo', 'É solução comum em telas e textos longos pela previsibilidade visual.'],
+    ['Hierarquia visual orienta o leitor por meio de tamanho, peso, posição, contraste e espaçamento dos elementos.', 'Certo', 'A página precisa indicar o que é mais importante e como a leitura deve avançar.'],
+    ['Editoração é o processo de organizar tecnicamente textos e elementos visuais para publicação.', 'Certo', 'Inclui preparação, composição, revisão, fechamento e adequação ao suporte.'],
+    ['Grid editorial é uma estrutura invisível que ajuda a alinhar colunas, imagens, títulos e espaços.', 'Certo', 'O grid garante consistência e facilita o trabalho de diagramação.'],
+    ['Entrelinha, corpo, família tipográfica e contraste afetam diretamente a legibilidade.', 'Certo', 'Escolhas tipográficas inadequadas dificultam leitura e compreensão.'],
+    ['Preparação de originais dispensa conferência de nomes próprios, siglas e padronização textual.', 'Errado', 'Esses elementos precisam ser revisados para evitar inconsistências e erros.'],
+    ['Diagramação jornalística deve equilibrar informação, leitura, ritmo visual e identidade do veículo.', 'Certo', 'Não é apenas estética; é organização funcional da informação.'],
+    ['Margens e brancos são desperdícios de espaço e devem ser eliminados em projetos gráficos profissionais.', 'Errado', 'Espaços em branco ajudam respiração visual, hierarquia e legibilidade.'],
+    ['Tipografia decorativa pode prejudicar textos longos quando compromete legibilidade.', 'Certo', 'Fontes ornamentais podem funcionar em títulos, mas raramente são adequadas ao corpo do texto.']
+  ].map(([assertion, correct, explanation]) => ({
+    category: 'Editoração e Projeto Gráfico',
+    text: `[Editoração e Projeto Gráfico] ${assertion}`,
+    correct: correct as 'Certo' | 'Errado',
+    explanation,
+    reference: 'Editoração e Projeto Gráfico'
+  })),
+  ...[
+    ['Engajamento pode incluir curtidas, comentários, compartilhamentos, salvamentos, respostas e outras interações.', 'Certo', 'A métrica indica reação ativa do público ao conteúdo.'],
+    ['Impressões sempre equivalem ao número de pessoas únicas alcançadas.', 'Errado', 'Impressões contam exibições totais; uma mesma pessoa pode gerar várias.'],
+    ['Taxa de conversão relaciona conversões ao universo de usuários impactados ou visitantes de uma ação.', 'Certo', 'Ela avalia eficiência da comunicação para gerar comportamento desejado.'],
+    ['Métricas de vaidade, como curtidas isoladas, podem ser insuficientes para avaliar objetivos estratégicos.', 'Certo', 'Indicadores precisam ser interpretados conforme meta, público e contexto.'],
+    ['CTR baixo pode indicar problema de chamada, segmentação, criativo, oferta ou adequação ao público.', 'Certo', 'A taxa de cliques ajuda a diagnosticar atratividade e pertinência.'],
+    ['KPI deve ser definido depois da campanha apenas para escolher o número que parece melhor.', 'Errado', 'Indicadores-chave devem ser planejados antes, com metas e critérios claros.'],
+    ['SEO jornalístico busca melhorar encontrabilidade sem abandonar clareza, relevância e responsabilidade editorial.', 'Certo', 'Otimizar para busca não deve gerar títulos enganosos ou empobrecimento informativo.'],
+    ['Analytics digital substitui completamente julgamento editorial e interesse público.', 'Errado', 'Dados ajudam decisões, mas não eliminam critérios jornalísticos e responsabilidade social.']
+  ].map(([assertion, correct, explanation]) => ({
+    category: 'Comunicação Digital',
+    text: `[Comunicação Digital] ${assertion}`,
+    correct: correct as 'Certo' | 'Errado',
+    explanation,
+    reference: 'Comunicação Digital'
+  })),
+  ...[
+    ['A LAI prevê prazos máximos de sigilo para informações reservadas, secretas e ultrassecretas.', 'Certo', 'A classificação de sigilo é excepcional e temporalmente limitada.'],
+    ['O pedido de acesso à informação não precisa apresentar justificativa do motivo da solicitação.', 'Certo', 'O direito de acesso independe de demonstração de interesse específico pelo solicitante.'],
+    ['A LGPD protege apenas dados digitais, excluindo documentos físicos com dados pessoais.', 'Errado', 'A lei se aplica a tratamento de dados pessoais em meios físicos ou digitais, quando presentes seus requisitos.'],
+    ['Controlador é quem toma decisões referentes ao tratamento de dados pessoais.', 'Certo', 'O operador realiza o tratamento em nome do controlador.'],
+    ['Anonimização busca impedir a associação direta ou indireta de dado a um indivíduo, observados meios técnicos razoáveis.', 'Certo', 'Dados anonimizados corretamente deixam de identificar o titular de modo razoável.'],
+    ['Consentimento é a única base legal possível para tratamento de dados pessoais.', 'Errado', 'A LGPD prevê várias bases legais, como obrigação legal, execução de políticas públicas e legítimo interesse, conforme o caso.'],
+    ['Tratamento de dados pelo poder público deve observar finalidade pública e transparência.', 'Certo', 'Órgãos públicos precisam informar hipóteses e finalidades de uso dos dados.'],
+    ['Dados pessoais de crianças e adolescentes exigem atenção especial ao melhor interesse desse público.', 'Certo', 'A LGPD dedica proteção específica a crianças e adolescentes.'],
+    ['A LAI autoriza negar qualquer pedido de informação apenas porque o tema pode gerar crítica ao órgão.', 'Errado', 'Crítica pública não é fundamento legal para negar acesso.'],
+    ['Encarregado de dados atua como canal de comunicação entre controlador, titulares e autoridade nacional.', 'Certo', 'É função prevista na governança de proteção de dados.']
+  ].map(([assertion, correct, explanation]) => ({
+    category: 'LAI e LGPD',
+    text: `[LAI e LGPD] ${assertion}`,
+    correct: correct as 'Certo' | 'Errado',
+    explanation,
+    reference: 'LAI e LGPD'
+  })),
+  ...[
+    ['Ambientes de inovação incluem espaços e arranjos que estimulam interação entre empreendedores, ICTs, governo, investidores e sociedade.', 'Certo', 'Parques tecnológicos, incubadoras, hubs e laboratórios vivos são exemplos de estruturas de apoio.'],
+    ['Inteligência tecnológica monitora informações científicas, mercadológicas, patentárias e competitivas para apoiar decisões estratégicas.', 'Certo', 'Ela transforma sinais dispersos em conhecimento útil para inovação.'],
+    ['Mapas tecnológicos podem revelar tendências de pesquisa, competidores, lacunas e oportunidades de desenvolvimento.', 'Certo', 'A análise sistemática de dados ajuda a orientar investimentos e parcerias.'],
+    ['Redes de pesquisa são sempre informais e incompatíveis com financiamento público.', 'Errado', 'Redes podem ser formais, financiadas e estratégicas para cooperação científica.'],
+    ['Universidades exercem papel central na formação de recursos humanos e produção de conhecimento científico.', 'Certo', 'Elas são atores fundamentais em sistemas de CT&I.'],
+    ['ICTs públicas podem interagir com empresas em projetos de P&D, respeitando regras legais e institucionais.', 'Certo', 'O marco legal estimula cooperação para inovação e transferência tecnológica.'],
+    ['Incubadoras e aceleradoras são idênticas quanto a estágio, duração e objetivo de apoio aos empreendimentos.', 'Errado', 'Incubadoras tendem a apoiar fases iniciais e estruturantes; aceleradoras focam tração e escala em ciclos intensivos.'],
+    ['Living labs valorizam cocriação com usuários em ambientes reais de uso.', 'Certo', 'A participação do usuário ajuda a testar soluções em condições próximas da realidade.'],
+    ['Bibliometria pode mapear colaboração científica por coautoria e redes institucionais.', 'Certo', 'Relações de coautoria revelam conexões entre pesquisadores, grupos e instituições.'],
+    ['O fator de impacto deve ser usado com cautela, pois não mede sozinho a qualidade de uma pesquisa.', 'Certo', 'Métricas quantitativas precisam ser combinadas com avaliação qualitativa.'],
+    ['Prospecção tecnológica é voltada exclusivamente a prever com certeza absoluta quais tecnologias vencerão no futuro.', 'Errado', 'Ela trabalha cenários, tendências e incertezas, não certezas absolutas.'],
+    ['A hélice tríplice pode ser ampliada em modelos que incluem sociedade civil e meio ambiente em debates sobre inovação.', 'Certo', 'Modelos de quádrupla e quíntupla hélice expandem a análise para outros atores e dimensões.'],
+    ['Patentes podem servir como fonte para inteligência e prospecção tecnológica.', 'Certo', 'Bases patentárias revelam trajetórias técnicas, competidores e áreas de investimento.'],
+    ['Sistemas regionais de inovação consideram capacidades locais, instituições, políticas e vocações produtivas de determinado território.', 'Certo', 'A inovação tem forte dimensão territorial e institucional.'],
+    ['Transferência de tecnologia envolve mecanismos como licenciamento, cooperação, contratos, spin-offs e compartilhamento de conhecimento.', 'Certo', 'É processo de passagem de conhecimento científico ou técnico para aplicação social ou produtiva.']
+  ].map(([assertion, correct, explanation]) => ({
+    category: 'CT&I',
+    text: `[CT&I] ${assertion}`,
+    correct: correct as 'Certo' | 'Errado',
+    explanation,
+    reference: 'CT&I'
+  }))
 ];
 
 const categories = [
@@ -653,8 +1237,32 @@ export const getJournalismQuestions = (): Question[] => {
     });
   });
 
-  // 2. Loop to generate up to 300 questions
-  const totalTarget = 300;
+  // 2. Add hand-crafted supplemental questions for requested pending topics
+  supplementalJournalismQuestions.forEach(q => {
+    result.push({
+      id: result.length + 1,
+      category: mapCategory(q.category),
+      text: q.text,
+      correct: q.correct,
+      explanation: q.explanation,
+      reference: q.reference
+    });
+  });
+
+  // 3. Add expanded requested topics with explicit coverage
+  expandedRequestedJournalismQuestions.forEach(q => {
+    result.push({
+      id: result.length + 1,
+      category: mapCategory(q.category),
+      text: q.text,
+      correct: q.correct,
+      explanation: q.explanation,
+      reference: q.reference
+    });
+  });
+
+  // 4. Loop to generate up to 520 questions
+  const totalTarget = 520;
   const numToGen = totalTarget - result.length;
 
   for (let i = 0; i < numToGen; i++) {
@@ -683,9 +1291,10 @@ export const getJournalismQuestions = (): Question[] => {
     });
   }
 
-  // 3. Append the entire 1400-question core (Português, Inglês, TI Básica, Alagoas, Ética) with non-overlapping IDs
+  // 5. Append core questions (Português, Inglês, TI Básica, Legislação, Alagoas) with non-overlapping IDs
   let currentMaxId = Math.max(...result.map(q => q.id), 300);
   quizQuestions.forEach(q => {
+    // Include all core questions for journalism
     currentMaxId++;
     result.push({
       ...q,

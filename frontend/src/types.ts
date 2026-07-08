@@ -26,7 +26,8 @@ export type QuestionCategory =
   | 'TI Básica'
   | 'Ética e Compliance'
   | 'Conhecimentos de Alagoas'
-  | 'Conhecimentos Específicos';
+  | 'Conhecimentos Específicos'
+  | 'Conhecimentos Específicos - Jornalismo';
 
 export interface Question {
   id: number;

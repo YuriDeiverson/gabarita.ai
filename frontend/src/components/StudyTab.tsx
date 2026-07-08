@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { studySections } from '../data/studyData';
-import { BookOpen, Cpu, Shield, MapPin, Terminal, AlertTriangle, ChevronDown, ChevronUp, CheckCircle, Search, HelpCircle } from 'lucide-react';
+import { BookOpen, Cpu, Shield, MapPin, Terminal, AlertTriangle, ChevronDown, ChevronUp, CheckCircle, Search, HelpCircle, Clock, Target, Zap } from 'lucide-react';
 
 export default function StudyTab() {
   const sections = useMemo(() => {
@@ -18,16 +18,10 @@ export default function StudyTab() {
   const [activeSectionId, setActiveSectionId] = useState<string | null>(null);
 
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [expandedCards, setExpandedCards] = useState<{ [key: string]: boolean }>({
-    'pt-reescrita': true,
-    'ti-cloud': true,
-    'et-decreto': true,
-    'al-emancipacao': true,
-    'esp-devops': true,
-    'enf-sus': true,
-    'enf-etica': true,
-    'jor-teoria': true,
-    'jor-redacao': true
+  const [expandedCards, setExpandedCards] = useState<{ [key: string]: boolean }>({});
+  const [completedCards, setCompletedCards] = useState<{ [key: string]: boolean }>(() => {
+    const saved = localStorage.getItem('completed_study_cards');
+    return saved ? JSON.parse(saved) : {};
   });
 
   const iconMap: { [key: string]: any } = {
@@ -87,6 +81,19 @@ export default function StudyTab() {
       [cardId]: !prev[cardId]
     }));
   };
+
+  const toggleComplete = (cardId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCompletedCards(prev => {
+      const updated = { ...prev, [cardId]: !prev[cardId] };
+      localStorage.setItem('completed_study_cards', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  const completedCount = Object.values(completedCards).filter(Boolean).length;
+  const totalCards = sections.reduce((acc, section) => acc + section.cards.length, 0);
+  const progressPercent = totalCards > 0 ? Math.round((completedCount / totalCards) * 100) : 0;
 
   // Filter study cards by search term
   const filteredCards = useMemo(() => {
@@ -155,31 +162,50 @@ export default function StudyTab() {
         </div>
       </div>
 
-      {/* active section overview & Pareto Explanation */}
-      <div className="bg-gradient-to-r from-slate-800 to-slate-900 text-white p-6 rounded-2xl shadow-sm relative overflow-hidden border border-slate-700">
-        <div className="absolute -right-10 -bottom-10 opacity-10">
-          <BookOpen className="w-48 h-48" />
-        </div>
-        <div className="relative z-10 space-y-3">
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="px-2.5 py-1 text-xs font-bold bg-amber-500 text-amber-950 rounded-full flex items-center gap-1.5">
-              <AlertTriangle className="w-3.5 h-3.5" />
-              Princípio de Pareto Recursivo
-            </span>
-            <span className="px-2.5 py-1 text-xs font-bold bg-white/10 rounded-full">
-              Dificuldade: {activeSection.difficulty}
-            </span>
-            <span className="px-2.5 py-1 text-xs font-bold bg-white/10 rounded-full">
-              Peso na Prova: {activeSection.weight}
-            </span>
+      {/* Progress Overview */}
+      <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <Target className="w-5 h-5 text-emerald-600" />
+            <span className="font-semibold text-slate-800">Progresso Geral</span>
           </div>
-          <h2 className="text-xl lg:text-2xl font-bold tracking-tight text-white">{activeSection.title}</h2>
-          <p className="text-sm text-slate-300 leading-relaxed max-w-4xl">{activeSection.paretoJustification}</p>
+          <span className="text-sm font-bold text-emerald-600">{completedCount}/{totalCards} ({progressPercent}%)</span>
+        </div>
+        <div className="w-full bg-slate-100 rounded-full h-2">
+          <div 
+            className="bg-gradient-to-r from-emerald-500 to-emerald-600 h-2 rounded-full transition-all duration-500"
+            style={{ width: `${progressPercent}%` }}
+          />
+        </div>
+      </div>
+
+      {/* Active Section Header */}
+      <div className="bg-gradient-to-br from-slate-50 to-white rounded-xl border border-slate-200 p-5 shadow-sm">
+        <div className="flex items-start justify-between">
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-2">
+              <span className={`px-2 py-0.5 text-[11px] font-bold rounded-full ${
+                activeSection.difficulty === 'Fácil' ? 'bg-emerald-100 text-emerald-700' :
+                activeSection.difficulty === 'Médio' ? 'bg-amber-100 text-amber-700' :
+                'bg-rose-100 text-rose-700'
+              }`}>
+                {activeSection.difficulty}
+              </span>
+              <span className="px-2 py-0.5 text-[11px] font-bold bg-slate-200 text-slate-700 rounded-full">
+                {activeSection.weight}
+              </span>
+            </div>
+            <h2 className="text-lg font-bold text-slate-800 mb-2">{activeSection.title}</h2>
+            <p className="text-sm text-slate-600 line-clamp-2">{activeSection.paretoJustification}</p>
+          </div>
+          <div className="hidden sm:block">
+            <Zap className="w-8 h-8 text-amber-500 opacity-50" />
+          </div>
         </div>
       </div>
 
       {/* Study Notes List */}
-      <div className="space-y-4">
+      <div className="space-y-3">
         {filteredCards.length === 0 ? (
           <div className="text-center py-12 bg-white rounded-xl border border-slate-100">
             <p className="text-slate-500 text-sm">Nenhum resumo encontrado para "{searchTerm}".</p>
@@ -187,53 +213,76 @@ export default function StudyTab() {
         ) : (
           filteredCards.map(card => {
             const isExpanded = !!expandedCards[card.id];
+            const isCompleted = !!completedCards[card.id];
             const colors = colorMap[activeSection.color];
 
             return (
               <div 
                 key={card.id} 
                 id={`card-${card.id}`}
-                className="bg-white rounded-xl shadow-xs border border-slate-200 overflow-hidden transition-all"
+                className={`bg-white rounded-lg border transition-all ${
+                  isCompleted ? 'border-emerald-200 bg-emerald-50/30' : 'border-slate-200'
+                } ${isExpanded ? 'shadow-sm' : 'shadow-xs'}`}
               >
                 {/* Card Header (Clickable) */}
                 <div 
                   onClick={() => toggleCard(card.id)}
-                  className="flex items-center justify-between p-4 cursor-pointer hover:bg-slate-50 transition-colors"
+                  className="flex items-center justify-between p-3 cursor-pointer hover:bg-slate-50 transition-colors"
                 >
-                  <div className="flex items-center gap-3">
-                    <div className={`w-2.5 h-2.5 rounded-full ${activeSection.color === 'emerald' ? 'bg-emerald-500' : activeSection.color === 'blue' ? 'bg-blue-500' : activeSection.color === 'amber' ? 'bg-amber-500' : activeSection.color === 'rose' ? 'bg-rose-500' : 'bg-slate-500'}`}></div>
-                    <h3 className="font-bold text-sm lg:text-base text-slate-800">{card.title}</h3>
+                  <div className="flex items-center gap-3 flex-1 min-w-0">
+                    <button
+                      onClick={(e) => toggleComplete(card.id, e)}
+                      className={`flex-shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
+                        isCompleted 
+                          ? 'bg-emerald-500 border-emerald-500 text-white' 
+                          : 'border-slate-300 hover:border-emerald-400'
+                      }`}
+                    >
+                      {isCompleted && <CheckCircle className="w-3 h-3" />}
+                    </button>
+                    <div className="flex-1 min-w-0">
+                      <h3 className={`font-semibold text-sm truncate ${
+                        isCompleted ? 'text-slate-500 line-through' : 'text-slate-800'
+                      }`}>
+                        {card.title}
+                      </h3>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <span className={`text-[10px] lg:text-xs font-bold px-2 py-0.5 rounded-full ${colors.bg} ${colors.text} border ${colors.border}`}>
-                      {card.paretoRatio}
-                    </span>
+                  <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+                    {card.isQuente && (
+                      <span className="px-1.5 py-0.5 text-[10px] font-bold bg-amber-100 text-amber-700 rounded">
+                        🔥
+                      </span>
+                    )}
                     {isExpanded ? (
-                      <ChevronUp className="w-4 h-4 text-slate-500" />
+                      <ChevronUp className="w-4 h-4 text-slate-400" />
                     ) : (
-                      <ChevronDown className="w-4 h-4 text-slate-500" />
+                      <ChevronDown className="w-4 h-4 text-slate-400" />
                     )}
                   </div>
                 </div>
 
                 {/* Card Expandable Body */}
                 {isExpanded && (
-                  <div className="border-t border-slate-100 p-5 bg-white space-y-4">
-                    {/* Rich HTML Content */}
+                  <div className="border-t border-slate-100 p-4 bg-white">
+                    {/* Content */}
                     <div 
-                      className="text-sm text-slate-600 leading-relaxed overflow-x-auto"
+                      className="text-sm text-slate-600 leading-relaxed mb-4 [&_p]:mb-3 [&_ul]:list-disc [&_ul]:pl-4 [&_ol]:list-decimal [&_ol]:pl-4 [&_li]:mb-1 [&_strong]:font-semibold [&_strong]:text-slate-800"
                       dangerouslySetInnerHTML={{ __html: card.content }}
                     />
 
-                    {/* Key Takeaways */}
-                    <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-2">
-                      <div className="flex items-center gap-2 text-xs font-bold text-slate-700 uppercase tracking-wider">
-                        <CheckCircle className="w-4 h-4 text-emerald-500" />
-                        <span>Resumo de Ouro (Decoreba Necessária)</span>
+                    {/* Key Takeaways - Simplified */}
+                    <div className="bg-slate-50 rounded-lg p-3 border border-slate-100">
+                      <div className="flex items-center gap-2 text-xs font-semibold text-slate-700 mb-2">
+                        <Zap className="w-3.5 h-3.5 text-amber-500" />
+                        <span>Pontos Chave</span>
                       </div>
-                      <ul className="list-disc pl-5 text-xs text-slate-600 space-y-1.5">
+                      <ul className="space-y-1">
                         {card.keyTakeaways.map((takeaway, index) => (
-                          <li key={index}>{takeaway}</li>
+                          <li key={index} className="text-xs text-slate-600 flex items-start gap-2">
+                            <span className="text-emerald-500 mt-0.5">•</span>
+                            <span>{takeaway}</span>
+                          </li>
                         ))}
                       </ul>
                     </div>

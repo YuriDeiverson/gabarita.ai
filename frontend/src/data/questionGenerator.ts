@@ -28,6 +28,306 @@ const allBaseEt = [...baseEtica, ...commonEt];
 const allBaseAl = [...baseAlagoas, ...commonAl];
 const allBaseIng = [...baseIngles];
 
+const expandedPortugueseQuestions: Omit<Question, 'id'>[] = [
+  ...[
+    ['Texto de apoio: A transparência pública não se resume à divulgação de planilhas. Para que a informação produza controle social, é necessário que o cidadão compreenda os dados, identifique sua relevância e consiga relacioná-los a decisões concretas do Estado. Com base no texto, julgue o item: Infere-se do texto que a simples publicação de dados, sem inteligibilidade e contextualização, pode ser insuficiente para o exercício do controle social.', 'Certo', 'A inferência decorre da ideia de que a informação precisa ser compreensível, relevante e relacionada a decisões concretas para produzir controle social.'],
+    ['Texto de apoio: Em muitos órgãos, a inovação começou como promessa de economia, mas se tornou também uma exigência de prestação de contas. Com base no texto, julgue o item: O texto pressupõe que inovação e prestação de contas são ideias necessariamente incompatíveis na administração pública.', 'Errado', 'O texto aproxima inovação e prestação de contas, não as apresenta como incompatíveis.'],
+    ['Texto de apoio: O relatório afirmou que todos os editais foram publicados no prazo, embora parte dos pesquisadores ainda reclamasse da linguagem excessivamente técnica. Com base no texto, julgue o item: A oração iniciada por "embora" introduz ressalva em relação à avaliação positiva da publicação tempestiva dos editais.', 'Certo', 'O conectivo concessivo apresenta uma limitação ou contraste: os editais saíram no prazo, mas a linguagem ainda gerou reclamações.'],
+    ['Texto de apoio: Ao dizer que o sistema "facilitou tanto o acesso que ninguém conseguiu encontrar o formulário", o autor emprega ironia.', 'Certo', 'Há contraste intencional entre a suposta facilitação e o resultado negativo, característica de uso irônico.'],
+    ['Texto de apoio: A leitura apressada de indicadores pode transformar números corretos em conclusões equivocadas. Com base no texto, julgue o item: A ideia principal é a defesa da eliminação de indicadores quantitativos em relatórios públicos.', 'Errado', 'O texto critica a leitura apressada dos indicadores, não a existência de indicadores quantitativos.'],
+    ['Texto de apoio: O texto distingue fato de opinião ao apresentar dados verificáveis e, em seguida, avaliá-los como insuficientes para explicar o fenômeno.', 'Certo', 'Dados verificáveis pertencem ao campo factual; a avaliação de suficiência constitui apreciação interpretativa.'],
+    ['Texto de apoio: Quando se afirma que "a pesquisa reduziu o problema, mas não o eliminou", conclui-se corretamente que houve melhora parcial.', 'Certo', 'Reduzir sem eliminar indica avanço incompleto, isto é, melhora parcial.'],
+    ['Texto de apoio: A frase "É evidente que a medida foi um sucesso" apresenta opinião, pois contém avaliação valorativa não demonstrada no próprio enunciado.', 'Certo', 'A expressão "é evidente" e o juízo de sucesso revelam avaliação, não fato comprovado no enunciado.'],
+    ['Texto de apoio: Se o texto afirma que "apenas os projetos com documentação completa foram analisados", pressupõe-se que projetos sem documentação completa não foram analisados.', 'Certo', 'O advérbio "apenas" restringe o conjunto analisado aos projetos com documentação completa.'],
+    ['Texto de apoio: O autor sustenta que políticas científicas devem ser avaliadas por seus efeitos sociais, e não apenas por valores executados. Com base no texto, julgue o item: A conclusão compatível é que execução orçamentária, isoladamente, não basta para medir o êxito da política.', 'Certo', 'A assertiva retoma a oposição entre efeitos sociais e mera execução de valores.'],
+    ['Texto de apoio: A frase "os dados falam por si" deve ser compreendida literalmente, pois dados possuem capacidade autônoma de enunciação verbal.', 'Errado', 'Trata-se de expressão figurada que sugere evidência dos dados, não fala literal.'],
+    ['Texto de apoio: Em "O programa, que atende municípios pequenos, será ampliado", a informação entre vírgulas permite inferir que o programa atende municípios pequenos, mas não restringe um programa entre outros.', 'Certo', 'A oração adjetiva explicativa acrescenta informação sobre o programa já identificado.'],
+    ['Texto de apoio: A expressão "mais uma vez" em "Mais uma vez, o prazo foi prorrogado" pressupõe ocorrência anterior de prorrogação.', 'Certo', 'A locução pressupõe repetição do evento mencionado.'],
+    ['Texto de apoio: Ao afirmar que "nem toda modernização representa inovação", o texto admite que algumas modernizações podem representar inovação.', 'Certo', 'A negação parcial não exclui todas as ocorrências; apenas afasta equivalência absoluta.'],
+    ['Texto de apoio: A passagem "o gestor prometeu simplicidade; entregou um manual de duzentas páginas" sugere crítica irônica à complexidade do material.', 'Certo', 'O contraste entre promessa de simplicidade e manual extenso produz efeito crítico.']
+  ].map(([assertion, correct, explanation]) => ({
+    category: 'Português' as QuestionCategory,
+    text: `[CEBRASPE - Interpretação de Texto] ${assertion}`,
+    correct: correct as 'Certo' | 'Errado',
+    explanation,
+    reference: 'Interpretação de texto - inferência, pressuposição e sentido'
+  })),
+  ...[
+    ['Texto predominantemente narrativo caracteriza-se pela progressão de ações em sequência temporal, com personagens ou agentes envolvidos.', 'Certo', 'A narração organiza acontecimentos em desenvolvimento temporal.'],
+    ['Texto descritivo tem como traço central a apresentação de características de seres, objetos, espaços ou situações.', 'Certo', 'A descrição privilegia atributos, estados e propriedades.'],
+    ['Texto dissertativo-argumentativo busca defender ponto de vista por meio de razões, dados e relações lógicas.', 'Certo', 'A argumentação estrutura tese e justificativas.'],
+    ['Texto injuntivo orienta o leitor a realizar ações, sendo comum em manuais, receitas, editais e instruções.', 'Certo', 'A injunção apresenta comandos, recomendações ou procedimentos.'],
+    ['Texto expositivo tem como finalidade principal explicar ou informar sobre determinado tema, sem necessariamente defender tese polêmica.', 'Certo', 'A exposição organiza conceitos e explicações de modo didático.'],
+    ['Uma sequência descritiva exige obrigatoriamente verbos no imperativo e ordenação de etapas.', 'Errado', 'Imperativos e etapas são típicos de textos injuntivos, não requisito da descrição.'],
+    ['Em um edital, predominam sequências injuntivas quando o texto estabelece procedimentos, prazos e obrigações ao candidato.', 'Certo', 'Editais frequentemente orientam condutas e impõem regras de ação.'],
+    ['A presença de opinião fundamentada e tentativa de convencimento indica traço argumentativo.', 'Certo', 'Argumentar é defender uma posição com fundamentos.']
+  ].map(([assertion, correct, explanation]) => ({
+    category: 'Português' as QuestionCategory,
+    text: `[CEBRASPE - Tipologia Textual] ${assertion}`,
+    correct: correct as 'Certo' | 'Errado',
+    explanation,
+    reference: 'Tipologia textual'
+  })),
+  ...[
+    ['As palavras "ciência", "necessário" e "relatório" são acentuadas por serem paroxítonas terminadas em ditongo.', 'Certo', 'Paroxítonas terminadas em ditongo oral são acentuadas na norma padrão.'],
+    ['A palavra "ideia" mantém acento agudo obrigatório segundo o Acordo Ortográfico vigente.', 'Errado', 'O acordo eliminou o acento dos ditongos abertos ei e oi em paroxítonas, como ideia e assembleia.'],
+    ['O vocábulo "órgão" recebe acento por apresentar ditongo nasal em palavra paroxítona.', 'Certo', 'A acentuação decorre da tonicidade e da terminação característica.'],
+    ['A forma "anti-inflamatório" emprega hífen porque o prefixo termina por vogal igual à vogal inicial do segundo elemento.', 'Certo', 'Usa-se hífen quando o prefixo termina com a mesma vogal que inicia o segundo elemento.'],
+    ['A grafia "autoescola" dispensa hífen porque o prefixo termina em vogal diferente da vogal inicial do segundo elemento.', 'Certo', 'Com vogais diferentes, em regra, os elementos se aglutinam sem hífen.'],
+    ['A palavra "micro-ondas" é grafada com hífen segundo o Acordo Ortográfico.', 'Certo', 'O prefixo micro seguido de palavra iniciada por o mantém hífen.'],
+    ['A forma "bem-vindo" é grafada sem hífen na norma padrão atual.', 'Errado', 'A grafia consagrada é bem-vindo, com hífen.'],
+    ['A palavra "pôde", no pretérito perfeito, mantém acento diferencial para distinguir-se de "pode", no presente.', 'Certo', 'Esse acento diferencial permanece obrigatório.'],
+    ['A forma verbal "têm" recebe acento diferencial quando o sujeito está no plural.', 'Certo', 'O acento circunflexo distingue a terceira pessoa do plural de "tem".'],
+    ['A palavra "hífen" é acentuada por ser oxítona terminada em n.', 'Errado', 'Hífen é paroxítona terminada em n, caso que recebe acento.']
+  ].map(([assertion, correct, explanation]) => ({
+    category: 'Português' as QuestionCategory,
+    text: `[CEBRASPE - Ortografia e Acentuação] ${assertion}`,
+    correct: correct as 'Certo' | 'Errado',
+    explanation,
+    reference: 'Ortografia, acentuação e hífen'
+  })),
+  ...[
+    ['Em "os relatórios públicos foram divulgados", "relatórios" é substantivo e "públicos" é adjetivo.', 'Certo', 'Relatórios nomeia seres/coisas; públicos caracteriza o substantivo.'],
+    ['Em "aquele edital será republicado", "aquele" exerce função de pronome demonstrativo.', 'Certo', 'O termo aponta para referente no discurso ou na situação comunicativa.'],
+    ['Em "muito relevante", "muito" atua como advérbio intensificador do adjetivo "relevante".', 'Certo', 'Nesse contexto, muito modifica o grau do adjetivo.'],
+    ['Em "o servidor e a pesquisadora compareceram", "e" é conjunção coordenativa aditiva.', 'Certo', 'O conectivo soma termos de mesma função.'],
+    ['Em "precisamos de dados", "de" é artigo definido feminino.', 'Errado', '"De" é preposição.'],
+    ['Em "as inscrições terminaram cedo", "as" é artigo definido que determina o substantivo "inscrições".', 'Certo', 'O artigo antecede e determina o nome.'],
+    ['Em "dois pareceres foram emitidos", "dois" é numeral cardinal.', 'Certo', 'Indica quantidade exata.'],
+    ['Em "infelizmente, o prazo expirou", "infelizmente" é advérbio que expressa avaliação do enunciador.', 'Certo', 'O advérbio modaliza a informação, revelando juízo.'],
+    ['Em "se chover, a reunião será remota", "se" introduz condição.', 'Certo', 'A conjunção estabelece hipótese para a realização do fato principal.'],
+    ['Em "fomento científico", o adjetivo "científico" flexiona-se em gênero e número para concordar com "fomento".', 'Certo', 'O adjetivo concorda com o substantivo a que se refere.']
+  ].map(([assertion, correct, explanation]) => ({
+    category: 'Português' as QuestionCategory,
+    text: `[CEBRASPE - Classes de Palavras] ${assertion}`,
+    correct: correct as 'Certo' | 'Errado',
+    explanation,
+    reference: 'Classes de palavras'
+  })),
+  ...[
+    ['Na frase "Os técnicos analisaram os documentos", a forma verbal está no pretérito perfeito do indicativo.', 'Certo', 'Analisaram indica ação concluída no passado.'],
+    ['Em "Se o candidato entregar os documentos, será habilitado", a forma "entregar" está no futuro do subjuntivo.', 'Certo', 'Com "se" condicional, usa-se futuro do subjuntivo para hipótese futura.'],
+    ['A forma "cumprisse" pertence ao presente do subjuntivo.', 'Errado', 'Cumprisse está no pretérito imperfeito do subjuntivo.'],
+    ['Em "os relatórios devem ser publicados", há locução verbal formada por verbo auxiliar e verbo principal no infinitivo.', 'Certo', 'Devem ser publicados constitui encadeamento verbal com valor de obrigação/passiva.'],
+    ['O modo imperativo é frequentemente usado em textos injuntivos para orientar ações do leitor.', 'Certo', 'Comandos e instruções recorrem ao imperativo.'],
+    ['Em "havia muitos processos pendentes", o verbo haver, com sentido de existir, deve permanecer no singular.', 'Certo', 'Haver existencial é impessoal e fica na terceira pessoa do singular.'],
+    ['Em "faz dez anos", o verbo fazer, indicando tempo decorrido, deve flexionar-se no plural.', 'Errado', 'Fazer temporal é impessoal e permanece no singular.'],
+    ['Em "tinham sido avaliadas as propostas", a locução verbal expressa voz passiva analítica.', 'Certo', 'A estrutura combina auxiliar com particípio, tendo "propostas" como sujeito paciente.'],
+    ['A forma "intervieram" é adequada para a terceira pessoa do plural do pretérito perfeito de "intervir".', 'Certo', 'Intervir conjuga-se como vir: eles intervieram.'],
+    ['A forma "se ele propor" está correta no futuro do subjuntivo do verbo propor.', 'Errado', 'O correto é "se ele propuser", pois propor deriva de pôr.']
+  ].map(([assertion, correct, explanation]) => ({
+    category: 'Português' as QuestionCategory,
+    text: `[CEBRASPE - Verbos] ${assertion}`,
+    correct: correct as 'Certo' | 'Errado',
+    explanation,
+    reference: 'Verbos, tempos, modos e locuções'
+  })),
+  ...[
+    ['Em "o edital foi publicado, mas o sistema ficou instável", a segunda oração coordena-se à primeira com valor adversativo.', 'Certo', 'A conjunção "mas" estabelece contraste entre as orações.'],
+    ['Em "estudei bastante, portanto fui aprovado", a conjunção "portanto" exprime conclusão.', 'Certo', 'O conectivo introduz consequência lógica do que foi afirmado antes.'],
+    ['Em "o candidato não enviou os documentos nem justificou a ausência", há coordenação aditiva com valor negativo.', 'Certo', '"Nem" soma negativas.'],
+    ['Em "quando o prazo terminou, o sistema foi bloqueado", a oração inicial é subordinada adverbial temporal.', 'Certo', 'A conjunção "quando" indica circunstância de tempo.'],
+    ['Em "embora houvesse recursos, o projeto não foi executado", a oração subordinada expressa concessão.', 'Certo', '"Embora" introduz fato que não impede o acontecimento principal.'],
+    ['Em "o relatório que foi entregue ontem será revisado", a oração iniciada por "que" restringe o sentido de "relatório".', 'Certo', 'Sem vírgulas, a oração adjetiva é restritiva.'],
+    ['Orações coordenadas dependem sintaticamente de uma oração principal.', 'Errado', 'Orações coordenadas são sintaticamente independentes entre si.'],
+    ['Em "é necessário que todos compareçam", a oração "que todos compareçam" exerce função substantiva.', 'Certo', 'A oração funciona como sujeito da expressão "é necessário".'],
+    ['A conjunção "porque" pode introduzir oração subordinada adverbial causal.', 'Certo', 'Em muitos contextos, "porque" indica causa ou explicação.'],
+    ['Em "trabalhou tanto que adoeceu", a segunda oração expressa consequência.', 'Certo', 'A estrutura intensiva "tanto que" produz valor consecutivo.']
+  ].map(([assertion, correct, explanation]) => ({
+    category: 'Português' as QuestionCategory,
+    text: `[CEBRASPE - Coordenação e Subordinação] ${assertion}`,
+    correct: correct as 'Certo' | 'Errado',
+    explanation,
+    reference: 'Período composto'
+  })),
+  ...[
+    ['Em "existem razões técnicas para a decisão", o verbo concorda corretamente com o sujeito plural "razões técnicas".', 'Certo', 'O verbo existir é pessoal e concorda com o sujeito.'],
+    ['Em "há razões técnicas para a decisão", o verbo deveria flexionar-se no plural.', 'Errado', 'Haver existencial é impessoal e permanece no singular.'],
+    ['Em "fui eu que redigi o parecer", a concordância do verbo "redigi" com "eu" está correta.', 'Certo', 'Com "fui eu que", o verbo pode concordar com o antecedente do relativo.'],
+    ['Em "mais de um pesquisador participou da reunião", o verbo no singular está correto.', 'Certo', 'Com "mais de um", em regra, o verbo fica no singular.'],
+    ['Em "anexas seguem as certidões", o adjetivo "anexas" concorda com "certidões".', 'Certo', 'Anexo, como adjetivo, concorda em gênero e número com o substantivo.'],
+    ['Em "é proibido entrada sem identificação", a concordância nominal está correta, pois "entrada" aparece sem artigo.', 'Certo', 'Sem determinante, a expressão pode ficar no masculino singular: é proibido entrada.'],
+    ['Em "é proibida a entrada sem identificação", a forma feminina está correta pela presença do artigo "a".', 'Certo', 'Com determinante feminino, o adjetivo concorda com o substantivo.'],
+    ['Em "os documentos seguem incluso", a concordância nominal está correta.', 'Errado', 'O correto é "inclusos", concordando com "documentos".'],
+    ['Em "um e outro servidor compareceram", admite-se concordância no plural.', 'Certo', 'Com a expressão "um e outro", o verbo pode ir ao plural.'],
+    ['Em "metade dos candidatos compareceu", a concordância no singular é possível porque o núcleo é "metade".', 'Certo', 'Expressões partitivas podem concordar com o núcleo ou com o especificador, conforme o caso.']
+  ].map(([assertion, correct, explanation]) => ({
+    category: 'Português' as QuestionCategory,
+    text: `[CEBRASPE - Concordância] ${assertion}`,
+    correct: correct as 'Certo' | 'Errado',
+    explanation,
+    reference: 'Concordância verbal e nominal'
+  })),
+  ...[
+    ['Em "não se divulgaram os resultados", a próclise é motivada pela palavra negativa "não".', 'Certo', 'Palavras negativas atraem o pronome átono para antes do verbo.'],
+    ['Em "jamais lhe entregariam o documento", a colocação pronominal está correta pela presença de palavra negativa.', 'Certo', '"Jamais" é fator de próclise.'],
+    ['Em início absoluto de período, recomenda-se a próclise em "Me entregaram o relatório".', 'Errado', 'Na norma padrão formal, não se inicia período com pronome oblíquo átono.'],
+    ['Em "entregaram-me o relatório", a ênclise está adequada em início de período sem fator de atração.', 'Certo', 'Na ausência de atrator, a ênclise é a colocação esperada no padrão formal.'],
+    ['Em "dar-se-á publicidade ao resultado", ocorre mesóclise, compatível com futuro do presente sem fator de próclise.', 'Certo', 'A mesóclise pode ocorrer com futuro do presente ou do pretérito em registro formal.'],
+    ['Em "não dar-se-á publicidade ao resultado", a mesóclise é obrigatória apesar do advérbio negativo.', 'Errado', 'O advérbio negativo atrai o pronome: "não se dará".'],
+    ['Em "que se apresentem os documentos", o pronome está em próclise devido ao pronome relativo ou conjunção integrante "que".', 'Certo', '"Que" costuma atuar como fator de atração.'],
+    ['Em locuções verbais, a colocação pronominal pode variar conforme fatores de atração e forma verbal envolvida.', 'Certo', 'A norma admite diferentes posições em locuções, desde que respeitados atratores e restrições formais.']
+  ].map(([assertion, correct, explanation]) => ({
+    category: 'Português' as QuestionCategory,
+    text: `[CEBRASPE - Colocação Pronominal] ${assertion}`,
+    correct: correct as 'Certo' | 'Errado',
+    explanation,
+    reference: 'Próclise, ênclise e mesóclise'
+  })),
+  ...[
+    ['No contexto "o parecer foi claro", "claro" pode significar compreensível, evidenciando polissemia do vocábulo.', 'Certo', 'A palavra claro pode indicar luminosidade, cor ou compreensão, conforme o contexto.'],
+    ['As palavras "deferir" e "indeferir" são sinônimas perfeitas.', 'Errado', 'Deferir é atender ou conceder; indeferir é negar.'],
+    ['Em "raiz do problema", a palavra "raiz" foi empregada em sentido conotativo.', 'Certo', 'Não se trata de raiz vegetal, mas de causa ou origem.'],
+    ['Em "a ponte sobre o rio foi interditada", "ponte" está em sentido denotativo.', 'Certo', 'O termo designa estrutura física real.'],
+    ['Ambiguidade ocorre quando uma construção permite mais de uma interpretação plausível.', 'Certo', 'A duplicidade de sentido pode resultar de posição de termos, pronomes ou estrutura sintática.'],
+    ['Em "vi o servidor com o binóculo", há possível ambiguidade quanto a quem estava com o binóculo.', 'Certo', 'A expressão pode indicar instrumento usado por quem viu ou objeto portado pelo servidor.'],
+    ['"Ratificar" significa corrigir, ao passo que "retificar" significa confirmar.', 'Errado', 'É o inverso: ratificar é confirmar; retificar é corrigir.'],
+    ['"Eminente" e "iminente" são parônimos, mas não sinônimos.', 'Certo', 'Eminente é ilustre/elevado; iminente é prestes a ocorrer.'],
+    ['Antônimo é palavra de sentido oposto ou contrastante em relação a outra.', 'Certo', 'Oposição semântica caracteriza antonímia.'],
+    ['Sinonímia contextual depende do uso no texto, não sendo sempre perfeita entre palavras isoladas.', 'Certo', 'Poucos sinônimos são absolutos; o contexto define adequação.']
+  ].map(([assertion, correct, explanation]) => ({
+    category: 'Português' as QuestionCategory,
+    text: `[CEBRASPE - Significação das Palavras] ${assertion}`,
+    correct: correct as 'Certo' | 'Errado',
+    explanation,
+    reference: 'Semântica e significação'
+  }))
+];
+
+const buildPortugueseDrillQuestions = (): Omit<Question, 'id'>[] => {
+  const make = (
+    topic: string,
+    statements: Array<[string, 'Certo' | 'Errado', string]>
+  ): Omit<Question, 'id'>[] => statements.map(([statement, correct, explanation], index) => ({
+    category: 'Português' as QuestionCategory,
+    text: `[CEBRASPE - ${topic}] Item PT-${topic.replace(/[^A-Za-zÀ-ÿ0-9]/g, '')}-${index + 1}: ${statement}`,
+    correct,
+    explanation,
+    reference: `Língua Portuguesa - ${topic}`
+  }));
+
+  return [
+    ...make('Interpretação de Texto', [
+      ['Texto de apoio: O gestor que divulga dados sem explicar sua origem transforma transparência em ruído. Julgue: o texto permite inferir que a qualidade da informação pública depende também de contextualização.', 'Certo', 'A expressão "transparência em ruído" indica que divulgar dados sem explicação pode dificultar, e não facilitar, a compreensão.'],
+      ['Texto de apoio: A política foi anunciada como definitiva, mas o próprio relatório admitia que os testes ainda eram preliminares. Julgue: há contraste entre o anúncio oficial e a cautela expressa no relatório.', 'Certo', 'A conjunção "mas" contrapõe a ideia de definição à de preliminaridade dos testes.'],
+      ['Texto de apoio: Ninguém questionou a importância da pesquisa; questionou-se apenas a falta de critérios para distribuir os recursos. Julgue: o texto nega a relevância da pesquisa científica.', 'Errado', 'O enunciado afirma expressamente que a importância da pesquisa não foi questionada.'],
+      ['Texto de apoio: O aplicativo prometia simplificar o atendimento; depois dele, o usuário precisava de três senhas para pedir uma senha nova. Julgue: há ironia na apresentação do resultado da suposta simplificação.', 'Certo', 'A complexidade descrita contradiz a promessa de simplificação, produzindo efeito irônico.'],
+      ['Texto de apoio: A autora distingue acesso formal à informação de acesso efetivo ao conhecimento. Julgue: para a autora, publicar informação e garantir compreensão são ações equivalentes.', 'Errado', 'A distinção entre acesso formal e efetivo afasta a equivalência entre publicar e fazer compreender.'],
+      ['Texto de apoio: O parecer não rejeitou o projeto; recomendou sua revisão. Julgue: conclui-se corretamente que o projeto ainda poderia ser reapresentado ou ajustado.', 'Certo', 'A recomendação de revisão indica possibilidade de ajuste, não rejeição definitiva.'],
+      ['Texto de apoio: O índice cresceu 2% no trimestre. Julgue: essa afirmação, isoladamente, constitui fato verificável, não opinião.', 'Certo', 'O enunciado apresenta dado mensurável passível de verificação.'],
+      ['Texto de apoio: A medida foi "brilhante", segundo o colunista. Julgue: o termo entre aspas expressa avaliação subjetiva.', 'Certo', '"Brilhante" contém juízo de valor.'],
+      ['Texto de apoio: Apenas os candidatos inscritos até sexta-feira receberam confirmação. Julgue: pressupõe-se que candidatos inscritos após sexta-feira não receberam confirmação.', 'Certo', '"Apenas" restringe o grupo beneficiado pela confirmação.'],
+      ['Texto de apoio: Ainda que os números pareçam positivos, o texto recomenda cautela. Julgue: a oração concessiva relativiza a leitura otimista dos números.', 'Certo', '"Ainda que" introduz ressalva à interpretação positiva.'],
+      ['Texto de apoio: A expressão "não é pouca coisa" reforça, por lítotes, a relevância do fato mencionado.', 'Certo', 'A negação do contrário é recurso expressivo que intensifica a avaliação positiva.'],
+      ['Texto de apoio: O relatório afirma que a queda foi temporária. Julgue: é correto concluir que a queda foi permanente.', 'Errado', 'Temporário e permanente têm sentidos opostos.'],
+      ['Texto de apoio: A frase "o silêncio da instituição disse muito" deve ser interpretada literalmente.', 'Errado', 'Trata-se de construção figurada: o silêncio é interpretado como sinal comunicativo.'],
+      ['Texto de apoio: Quando o texto afirma que a solução "não resolve tudo", admite-se que ela pode resolver parte do problema.', 'Certo', 'A negação total da suficiência não impede efeito parcial.'],
+      ['Texto de apoio: A ideia central de um parágrafo é necessariamente sua primeira frase.', 'Errado', 'Embora frequente, a ideia central pode aparecer em outras posições ou ser inferida do conjunto.'],
+      ['Texto de apoio: O trecho "o dado bruto informa pouco quando separado de método e contexto" valoriza a interpretação metodologicamente orientada.', 'Certo', 'O enunciado condiciona a utilidade do dado ao método e ao contexto.'],
+      ['Texto de apoio: Ao comparar o portal a um "labirinto", o autor sugere dificuldade de navegação.', 'Certo', 'A metáfora associa o portal a desorientação e percurso difícil.'],
+      ['Texto de apoio: O texto afirma que a crítica ao programa partiu de usuários e gestores. Julgue: é incorreto atribuir a crítica apenas aos usuários.', 'Certo', 'A informação menciona dois grupos; restringi-la a um deles altera o sentido.'],
+      ['Texto de apoio: A conclusão de um texto deve decorrer de suas premissas, sob pena de extrapolação interpretativa.', 'Certo', 'A CEBRASPE costuma cobrar justamente a compatibilidade entre conclusão e informações textuais.'],
+      ['Texto de apoio: Em textos argumentativos, opinião pode aparecer sustentada por fatos, dados ou exemplos.', 'Certo', 'Argumentar envolve articular ponto de vista a fundamentos.']
+    ]),
+    ...make('Tipologia Textual', [
+      ['Uma ata pode combinar exposição de decisões com sequência narrativa dos fatos ocorridos em reunião.', 'Certo', 'Textos concretos frequentemente misturam sequências tipológicas.'],
+      ['A predominância de verbos de ação em sequência temporal favorece a caracterização narrativa.', 'Certo', 'A progressão de ações é marca de narração.'],
+      ['A descrição privilegia a progressão argumentativa de tese, argumentos e conclusão.', 'Errado', 'Tese, argumentos e conclusão são traços da dissertação argumentativa.'],
+      ['Instruções de inscrição em edital tendem a apresentar sequência injuntiva.', 'Certo', 'O texto orienta condutas do leitor/candidato.'],
+      ['Texto expositivo pode explicar o funcionamento de uma política pública sem defender opinião específica.', 'Certo', 'A exposição organiza informações para esclarecer determinado tema.'],
+      ['A dissertação expositiva e a argumentativa são idênticas quanto à finalidade persuasiva.', 'Errado', 'A expositiva explica; a argumentativa procura convencer.'],
+      ['Uma receita culinária é exemplo clássico de texto injuntivo.', 'Certo', 'Receitas instruem ações em sequência.'],
+      ['Um relatório técnico pode conter trechos descritivos, expositivos e argumentativos.', 'Certo', 'Relatórios costumam descrever dados, explicar métodos e justificar conclusões.'],
+      ['A presença de personagens e conflito é incompatível com narração.', 'Errado', 'Personagens e conflito são comuns em textos narrativos.'],
+      ['A tipologia textual deve ser identificada pela função predominante, e não por uma palavra isolada.', 'Certo', 'A classificação depende do funcionamento global ou predominante do trecho.']
+    ]),
+    ...make('Ortografia', [
+      ['"Assembleia" perdeu o acento gráfico no Acordo Ortográfico vigente.', 'Certo', 'Paroxítonas com ditongo aberto ei/oi deixaram de ser acentuadas.'],
+      ['"Herói" permanece acentuada por ser oxítona com ditongo aberto.', 'Certo', 'A perda do acento atingiu paroxítonas, não oxítonas como herói.'],
+      ['"Feiura" é grafada sem acento segundo a norma atual.', 'Certo', 'O acordo eliminou o acento de i/u tônicos após ditongo em paroxítonas.'],
+      ['"Saúde" perdeu o acento por conter hiato.', 'Errado', 'Saúde mantém acento no u tônico em hiato.'],
+      ['"Antiético" é grafado sem hífen, com duplicação desnecessária de vogal.', 'Errado', 'A forma adequada é antiético, sem hífen e sem duplicação da vogal.'],
+      ['"Contra-ataque" é grafado com hífen porque o prefixo termina em a e o segundo elemento começa por a.', 'Certo', 'Vogais iguais na junção prefixal exigem hífen.'],
+      ['"Inter-regional" leva hífen porque o segundo elemento começa por r.', 'Certo', 'Com prefixos terminados em r, conserva-se hífen antes de r.'],
+      ['"Semianalfabeto" é grafado sem hífen.', 'Certo', 'Com prefixo semi seguido de vogal diferente, em regra não há hífen.'],
+      ['"Pré-escolar" mantém hífen por envolver prefixo tônico acentuado.', 'Certo', 'Prefixos como pré, pós e pró, quando tônicos, costumam manter hífen.'],
+      ['"Paraquedas" é grafia aceita sem hífen.', 'Certo', 'O Acordo Ortográfico consagrou a forma aglutinada para paraquedas e derivados.']
+    ]),
+    ...make('Classes de Palavras', [
+      ['Em "esta decisão", "esta" é pronome demonstrativo.', 'Certo', 'O termo situa o referente no discurso ou no espaço comunicativo.'],
+      ['Em "alguns candidatos recorreram", "alguns" é pronome indefinido.', 'Certo', 'Indica quantidade imprecisa.'],
+      ['Em "o porquê da decisão", "porquê" funciona como substantivo.', 'Certo', 'Vem determinado por artigo e equivale a motivo.'],
+      ['Em "porque choveu, a sessão foi remarcada", "porque" é conjunção causal.', 'Certo', 'Introduz causa para a remarcação.'],
+      ['Em "aonde o servidor foi?", o emprego de "aonde" pressupõe ideia de movimento.', 'Certo', 'Aonde combina preposição a com onde e indica destino.'],
+      ['Em "onde consta o edital", "onde" retoma adequadamente um documento abstrato em qualquer contexto formal.', 'Errado', 'Onde deve referir-se preferencialmente a lugar físico; em muitos contextos formais, usa-se "em que".'],
+      ['Em "menos pessoas compareceram", "menos" é invariável.', 'Certo', 'Não existe flexão "menas" na norma padrão.'],
+      ['Em "bastantes documentos foram anexados", "bastantes" pode funcionar como pronome indefinido variável.', 'Certo', 'Com sentido de muitos, varia no plural.'],
+      ['Em "os documentos chegaram bastante tarde", "bastante" é advérbio invariável.', 'Certo', 'Modifica o advérbio "tarde" e não se flexiona.'],
+      ['Em "meio cansada", "meio" é advérbio e permanece invariável.', 'Certo', 'Com sentido de um pouco, meio não concorda com o adjetivo.']
+    ]),
+    ...make('Verbos', [
+      ['"Se eles mantiverem a decisão" apresenta forma correta do futuro do subjuntivo de manter.', 'Certo', 'Manter segue o paradigma de ter: se eles mantiverem.'],
+      ['"Quando ele intervir" é forma correta do futuro do subjuntivo de intervir.', 'Errado', 'Na norma culta, o futuro do subjuntivo de intervir é "intervier", pois o verbo segue o paradigma de vir.'],
+      ['"Quando ele intervier" é forma adequada do futuro do subjuntivo de intervir.', 'Certo', 'Intervir conjuga-se como vir: quando ele vier/intervier.'],
+      ['"Se a comissão revir os documentos" está correto para o futuro do subjuntivo de rever.', 'Certo', 'Rever segue ver: se vir, se revir.'],
+      ['"Eles provêm de instituições distintas" está correto quando o sujeito é plural.', 'Certo', 'O acento diferencia a terceira pessoa plural de provir.'],
+      ['"Ele provém de instituição pública" está correto no singular.', 'Certo', 'No singular, usa-se provém.'],
+      ['"Eles veem os dados" perdeu o acento circunflexo no Acordo Ortográfico.', 'Certo', 'A forma plural de ver no presente é veem, sem acento.'],
+      ['"Crêem" é grafia atual correta.', 'Errado', 'A forma atual é creem, sem acento.'],
+      ['"Houve problemas" deve permanecer no singular, pois haver tem sentido de existir.', 'Certo', 'Haver existencial é impessoal.'],
+      ['"Devem haver problemas" está correto na norma padrão.', 'Errado', 'Em locução com haver impessoal, o auxiliar fica no singular: deve haver.']
+    ]),
+    ...make('Coordenação e Subordinação', [
+      ['A conjunção "todavia" introduz coordenação adversativa.', 'Certo', 'Todavia expressa oposição ou contraste.'],
+      ['A conjunção "logo" pode introduzir conclusão.', 'Certo', 'Em valor conclusivo, equivale a portanto.'],
+      ['A conjunção "ou" jamais pode ter valor de inclusão.', 'Errado', 'Dependendo do contexto, "ou" pode ser inclusivo ou alternativo exclusivo.'],
+      ['Orações subordinadas substantivas podem exercer função de sujeito, objeto direto ou complemento nominal.', 'Certo', 'Elas desempenham funções próprias de substantivos.'],
+      ['Orações adverbiais causais e concessivas exprimem a mesma relação semântica.', 'Errado', 'Causa indica motivo; concessão indica oposição insuficiente para impedir o fato principal.'],
+      ['Em "caso haja recurso, o prazo será reaberto", a oração inicial tem valor condicional.', 'Certo', 'Caso introduz hipótese.'],
+      ['Em "conforme informou a banca", a oração tem valor conformativo.', 'Certo', 'Conforme indica conformidade com uma fonte ou parâmetro.'],
+      ['Em "para que todos compreendam", há ideia de finalidade.', 'Certo', 'Para que introduz objetivo.'],
+      ['O pronome relativo "cujo" estabelece relação de posse e não admite artigo posposto.', 'Certo', 'A construção "cujo o" é inadequada na norma padrão.'],
+      ['Orações adjetivas explicativas são isoladas por vírgulas.', 'Certo', 'As vírgulas marcam caráter explicativo/acessório.']
+    ]),
+    ...make('Concordância', [
+      ['"Aluga-se salas" está correto quando "salas" é sujeito paciente plural.', 'Errado', 'Com partícula apassivadora, o verbo concorda: alugam-se salas.'],
+      ['"Precisa-se de servidores" está correto, pois o se funciona como índice de indeterminação do sujeito.', 'Certo', 'Com verbo transitivo indireto, o verbo fica no singular.'],
+      ['"Vende-se equipamentos" deve ser corrigido para "vendem-se equipamentos".', 'Certo', 'Equipamentos é sujeito paciente plural.'],
+      ['"Tratam-se de medidas urgentes" está correto.', 'Errado', 'Com tratar-se de, o verbo fica no singular: trata-se de medidas.'],
+      ['"A maioria dos candidatos compareceu" é concordância possível.', 'Certo', 'Com expressão partitiva, pode-se concordar com o núcleo singular.'],
+      ['"A maioria dos candidatos compareceram" também pode ocorrer por concordância atrativa com o especificador plural.', 'Certo', 'A concordância com o termo plural é aceita em muitos casos partitivos.'],
+      ['"Fomos nós quem elaboramos o relatório" é construção possível.', 'Certo', 'Com quem, admite-se concordância com o antecedente em certos contextos.'],
+      ['"Fomos nós que elaboramos o relatório" está correto.', 'Certo', 'Com que, o verbo concorda com o antecedente.'],
+      ['"É necessário paciência" está correto sem determinante antes de paciência.', 'Certo', 'Sem artigo, a expressão pode ficar no masculino singular.'],
+      ['"É necessária a paciência" está correto com artigo feminino.', 'Certo', 'Com determinante, há concordância com o substantivo.']
+    ]),
+    ...make('Colocação Pronominal', [
+      ['Em "sempre se exigiu transparência", a próclise é favorecida pelo advérbio "sempre".', 'Certo', 'Advérbios podem atrair o pronome átono.'],
+      ['Em "talvez se publique o resultado", a próclise decorre de palavra de valor dubitativo.', 'Certo', 'Talvez é fator de atração.'],
+      ['Em "publicar-se-ia o edital", há mesóclise com futuro do pretérito.', 'Certo', 'A mesóclise é compatível com futuro do presente e futuro do pretérito em registro formal.'],
+      ['Em "não publicar-se-ia o edital", a mesóclise é adequada apesar da negação.', 'Errado', 'A palavra negativa exige próclise: não se publicaria.'],
+      ['Em "os dados que se divulgaram", o relativo "que" atrai o pronome.', 'Certo', 'Pronomes relativos favorecem próclise.'],
+      ['Em "entregar-lhe-ei o documento", há mesóclise.', 'Certo', 'O pronome fica intercalado ao verbo no futuro.'],
+      ['Em "lhe entreguei o documento" no início absoluto de período, a colocação é a preferida na norma formal escrita.', 'Errado', 'A norma formal evita iniciar período com pronome oblíquo átono.'],
+      ['Em "entreguei-lhe o documento", a ênclise é adequada sem fator atrativo.', 'Certo', 'A ênclise é padrão em início de período sem atrator.'],
+      ['Em "ninguém lhe respondeu", a próclise é obrigatória pela palavra negativa.', 'Certo', 'Ninguém atrai o pronome.'],
+      ['Em "quem se responsabilizará?", a próclise é favorecida por pronome interrogativo.', 'Certo', 'Pronomes interrogativos atuam como atratores.']
+    ]),
+    ...make('Significação das Palavras', [
+      ['"Cessão", "sessão" e "seção" são homófonas em muitas variedades, mas têm sentidos distintos.', 'Certo', 'Cessão é ato de ceder; sessão é reunião; seção é divisão.'],
+      ['"Descrição" e "discrição" são parônimos com sentidos diferentes.', 'Certo', 'Descrição é ato de descrever; discrição é reserva.'],
+      ['"Mandado" e "mandato" são sinônimos perfeitos.', 'Errado', 'Mandado é ordem judicial; mandato é delegação de poderes ou período de exercício.'],
+      ['"Comprimento" e "cumprimento" têm significados distintos.', 'Certo', 'Comprimento é extensão; cumprimento é saudação ou execução.'],
+      ['Em "o projeto naufragou", o verbo está em sentido conotativo quando não há referência literal a embarcação.', 'Certo', 'Naufragar pode significar fracassar.'],
+      ['Em "a luz da sala falhou", "luz" foi empregada em sentido denotativo.', 'Certo', 'Refere-se a iluminação real.'],
+      ['Em "à luz da Constituição", "luz" tem sentido figurado de orientação ou perspectiva.', 'Certo', 'A expressão indica critério interpretativo.'],
+      ['"Vultoso" significa volumoso; "vultuoso" relaciona-se a inchaço na face.', 'Certo', 'São parônimos frequentemente cobrados.'],
+      ['"Flagrante" e "fragrante" são equivalentes semânticos.', 'Errado', 'Flagrante é evidente ou no ato; fragrante refere-se a aroma.'],
+      ['Ambiguidade pode ser recurso expressivo ou defeito de clareza, conforme o contexto.', 'Certo', 'Em textos objetivos, tende a ser problema; na literatura ou humor, pode ser intencional.']
+    ])
+  ];
+};
+
 // Templates for Português (20 dynamic templates)
 const ptTemplates = [
   {
@@ -799,7 +1099,13 @@ export function getFullSimulatedQuestions(): Question[] {
   allBasePt.forEach((q, i) => {
     result.push({ ...q, id: result.length + 1 });
   });
-  while (result.filter(q => q.category === 'Português').length < 300) {
+  expandedPortugueseQuestions.forEach(q => {
+    result.push({ ...q, id: result.length + 1 });
+  });
+  buildPortugueseDrillQuestions().forEach(q => {
+    result.push({ ...q, id: result.length + 1 });
+  });
+  while (result.filter(q => q.category === 'Português').length < 540) {
     const nextId = result.length + 1;
     const idx = result.filter(q => q.category === 'Português').length;
     result.push(createProceduralQuestion(nextId, 'Português', idx));

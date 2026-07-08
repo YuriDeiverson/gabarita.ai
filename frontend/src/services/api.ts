@@ -1,4 +1,14 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
+export const API_BASE_URL = (import.meta.env.VITE_API_URL || '/api').replace(/\/$/, '');
+
+const getApiErrorMessage = async (response: Response, fallback: string) => {
+  try {
+    const data = await response.json();
+    return data?.error || data?.message || `${fallback} (${response.status})`;
+  } catch {
+    return `${fallback} (${response.status})`;
+  }
+};
+
 export interface StudyPlan {
   id: string;
   course_id: string;
@@ -93,7 +103,9 @@ export const studyPlansApi = {
     const response = await fetch(`${API_BASE_URL}/study-plans/${id}`, {
       method: 'DELETE',
     });
-    if (!response.ok) throw new Error('Failed to delete study plan');
+    if (!response.ok) {
+      throw new Error(await getApiErrorMessage(response, 'Failed to delete study plan'));
+    }
   },
 
   activate: async (id: string): Promise<void> => {

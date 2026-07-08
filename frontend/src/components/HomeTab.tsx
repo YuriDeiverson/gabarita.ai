@@ -367,9 +367,14 @@ const scheduleWeeks = scheduleResponse.scheduleWeeks; // <-- ADICIONAR ESSA LINH
           } catch (e) {}
         }
 
-        // Delete from API if study plan ID exists
+        // Delete from API if study plan ID exists. If production API is unavailable,
+        // still remove the local plan so the user is not blocked by stale data.
         if (studyPlanId) {
-          await studyPlansApi.delete(studyPlanId);
+          try {
+            await studyPlansApi.delete(studyPlanId);
+          } catch (apiError) {
+            console.warn('Remote study plan deletion failed; clearing local plan only.', apiError);
+          }
         }
 
         // Clear localStorage

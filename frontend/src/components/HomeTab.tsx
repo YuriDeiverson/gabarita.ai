@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, MouseEvent } from 'react';
 import { COURSES_CONFIG, generateCustomPlan } from '../data/generator';
-import { studyPlansApi, scheduleApi } from '../services/api';
+import { API_BASE_URL, studyPlansApi, scheduleApi } from '../services/api';
 import { 
   Calendar, 
   Clock, 
@@ -55,6 +55,12 @@ const WEEKDAY_NUMBER_TO_NAME: { [key: number]: string } = {
   5: 'sexta',
   6: 'sabado',
 };
+
+  const shouldUseRemoteApi = () => {
+    if (typeof window === 'undefined') return true;
+    const isLocalhost = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+    return !(isLocalhost && /^https?:\/\//.test(API_BASE_URL));
+  };
 
   // Helper to calculate matching study days between today (July 2, 2026) and exam date
   const calculateStudyDays = (examDateStr: string, weekdays: number[]): number => {
@@ -246,35 +252,42 @@ const WEEKDAY_NUMBER_TO_NAME: { [key: number]: string } = {
       );
 
       if (result.success) {
-        // Generate schedule using API
-      const studyDaysPayload = selectedWeekdays.map(dayNum => ({
-  day: WEEKDAY_NUMBER_TO_NAME[dayNum],
-  hours: hoursPerDay,
-}));
+        let scheduleWeeks = result.weeks;
+        let studyPlanId: string | null = null;
 
-const scheduleResponse = await scheduleApi.generate({
-  courseId: selectedCourse,
-  examDate,
-  studyDays: studyDaysPayload,
-  studySections: result.sections
-});
+        if (shouldUseRemoteApi()) {
+          try {
+            const studyDaysPayload = selectedWeekdays.map(dayNum => ({
+              day: WEEKDAY_NUMBER_TO_NAME[dayNum],
+              hours: hoursPerDay,
+            }));
 
-const scheduleWeeks = scheduleResponse.scheduleWeeks; // <-- ADICIONAR ESSA LINHA
+            const scheduleResponse = await scheduleApi.generate({
+              courseId: selectedCourse,
+              examDate,
+              studyDays: studyDaysPayload,
+              studySections: result.sections
+            });
 
-        // Create study plan via API
-        const studyPlan = await studyPlansApi.create({
-          courseId: selectedCourse,
-          title: activeCourseConfig.name,
-          examDate,
-          hoursPerDay,
-          daysPerWeek: selectedWeekdays.length,
-          totalWeeks: scheduleWeeks.length,
-          studySections: result.sections,
-          scheduleWeeks: scheduleWeeks
-        });
+            scheduleWeeks = scheduleResponse.scheduleWeeks;
 
-        // Activate the plan
-        await studyPlansApi.activate(studyPlan.id);
+            const studyPlan = await studyPlansApi.create({
+              courseId: selectedCourse,
+              title: activeCourseConfig.name,
+              examDate,
+              hoursPerDay,
+              daysPerWeek: selectedWeekdays.length,
+              totalWeeks: scheduleWeeks.length,
+              studySections: result.sections,
+              scheduleWeeks
+            });
+
+            await studyPlansApi.activate(studyPlan.id);
+            studyPlanId = studyPlan.id;
+          } catch (apiError) {
+            console.warn('Remote study plan API unavailable; using local generated plan.', apiError);
+          }
+        }
 
         // 1. Save to course-specific prefixed keys (safe storage)
         localStorage.setItem(`${selectedCourse}_study_sections`, JSON.stringify(result.sections));
@@ -286,7 +299,7 @@ const scheduleWeeks = scheduleResponse.scheduleWeeks; // <-- ADICIONAR ESSA LINH
           hoursPerDay,
           selectedWeekdays,
           selectedTopics: selectedTopicIds,
-          studyPlanId: studyPlan.id
+          studyPlanId
         }));
         localStorage.removeItem(`${selectedCourse}_study_schedule_progress`);
         localStorage.removeItem(`${selectedCourse}_quiz_answers`);
@@ -302,7 +315,7 @@ const scheduleWeeks = scheduleResponse.scheduleWeeks; // <-- ADICIONAR ESSA LINH
           hoursPerDay,
           selectedWeekdays,
           selectedTopics: selectedTopicIds,
-          studyPlanId: studyPlan.id
+          studyPlanId
         }));
         localStorage.removeItem('study_schedule_progress');
         localStorage.removeItem('quiz_answers');

@@ -5,6 +5,17 @@ export interface Passage {
 }
 
 export const passages: { [key: string]: Passage } = {
+  'codevasf-racismo-institucional': {
+    id: 'codevasf-racismo-institucional',
+    title: 'Texto CB1A1 - Racismo Estrutural e Institucional (CODEVASF 2024)',
+    content: `O racismo estrutural é uma realidade cotidiana no Brasil, e as denúncias de atitudes racistas estão se tornando mais visíveis. Porém, o racismo institucional, que acontece dentro de organizações públicas e privadas em diversos setores, ainda é um conceito pouco familiar para muitas pessoas. Mesmo afetando diretamente milhões de brasileiros, esse tipo de racismo é menos conhecido.
+
+O racismo institucional vai além das atitudes individuais e ações isoladas. Ele está enraizado nas políticas, nos procedimentos e nas práticas das organizações. Isso significa que não se trata apenas de como as pessoas se comportam, mas também de como as estruturas e normas podem favorecer ou prejudicar grupos raciais específicos.
+
+Essas manifestações de racismo dentro das instituições podem ser observadas em várias áreas, desde a maneira como o pessoal é selecionado e promovido até a distribuição de recursos. Isso pode resultar em desigualdades sistêmicas que afetam grupos pertencentes a minorias raciais, limitando suas oportunidades e o reconhecimento de suas contribuições.
+
+Essa dimensão do racismo é frequentemente menos reconhecida do que as formas mais óbvias de preconceito racial, mas seu impacto é duradouro e pode contribuir significativamente para a manutenção de desigualdades com base na raça. O racismo institucional é um conceito-chave para compreender como as estruturas e práticas das organizações podem perpetuar a discriminação racial, mesmo que não haja intenções individuais de discriminar. É um problema complexo que requer atenção, portanto, reconhecer e abordar as maneiras como se manifesta o racismo institucional é fundamental para promover a igualdade racial nos espaços de trabalho.`
+  },
   'capitalismo-vigilancia': {
     id: 'capitalismo-vigilancia',
     title: 'Texto CG1A1 - Capitalismo de Vigilância (TRT 8ª Região)',

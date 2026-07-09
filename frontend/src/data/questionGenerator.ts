@@ -4,6 +4,7 @@ import { questionsPart2 } from './questionsPart2';
 import { questionsPart3 } from './questionsPart3';
 import { commonQuestions } from './commonQuestions';
 import { getCebraspeRealQuestions } from './cebraspeRealQuestions';
+import { codevasf2024BasicQuestions } from './codevasf2024Questions';
 
 // Base hand-crafted questions
 const basePortugues = questionsPart1.filter(q => q.category === 'Português');
@@ -19,10 +20,12 @@ const commonTI = commonQuestions.filter(q => q.category === 'TI Básica');
 const commonEt = commonQuestions.filter(q => q.category === 'Ética e Compliance');
 const commonAl = commonQuestions.filter(q => q.category === 'Conhecimentos de Alagoas');
 const commonEsp = commonQuestions.filter(q => q.category === 'Conhecimentos Específicos');
+const codevasfPt = codevasf2024BasicQuestions.filter(q => q.category === 'Português');
+const codevasfTI = codevasf2024BasicQuestions.filter(q => q.category === 'TI Básica');
 
 // Combine base lists
-const allBasePt = [...basePortugues, ...commonPt];
-const allBaseTI = [...baseTIBasica, ...commonTI];
+const allBasePt = [...codevasfPt, ...basePortugues, ...commonPt];
+const allBaseTI = [...codevasfTI, ...baseTIBasica, ...commonTI];
 const allBaseEsp = [...baseEspecificos, ...commonEsp];
 const allBaseEt = [...baseEtica, ...commonEt];
 const allBaseAl = [...baseAlagoas, ...commonAl];

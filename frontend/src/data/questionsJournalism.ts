@@ -1,6 +1,7 @@
 import { Question, QuestionCategory } from '../types';
 import { quizQuestions } from './quizData';
 import { deduplicateQuestions } from './questionGenerator';
+import { codevasf2024JournalismQuestions } from './codevasf2024Questions';
 
 // Helper to map fine-grained subjects to the official QuestionCategory union type
 const mapCategory = (cat: string): QuestionCategory => {
@@ -786,61 +787,61 @@ const getTemplatesForCategory = (category: string, index: number): Template => {
   switch (category) {
     case 'Teoria da Comunicação':
       if (t === 0) return {
-        text: `Na Teoria do Enquadramento (Framing), postula-se que a forma como um acontecimento é apresentado ao público induz interpretações específicas, destacando certos atributos em detrimento de outros.`,
+        text: `Considerando uma cobertura em que diferentes veículos relatam o mesmo fato com recortes distintos, a teoria do enquadramento explica que a seleção e a ênfase de determinados aspectos tendem a orientar interpretações específicas do público.`,
         correct: 'Certo',
         explanation: 'O enquadramento trata exatamente do recorte temático e contextual que define a perspectiva pela qual a notícia será consumida, direcionando o julgamento do leitor.',
         reference: 'Teoria do Enquadramento (Framing)'
       };
       if (t === 1) return {
-        text: `A Teoria da Espiral do Silêncio afirma que os indivíduos tendem a omitir suas opiniões quando percebem que estas divergem da visão majoritária, por medo do isolamento social.`,
+        text: `Acerca da formação da opinião pública, a espiral do silêncio ajuda a explicar por que indivíduos tendem a silenciar posições percebidas como minoritárias, em razão do receio de isolamento social.`,
         correct: 'Certo',
         explanation: 'Desenvolvida por Elisabeth Noelle-Neumann, essa teoria explica como a percepção do clima de opinião molda a disposição dos sujeitos de expressar suas convicções.',
         reference: 'Espiral do Silêncio'
       };
       if (t === 2) return {
-        text: `Segundo a Teoria dos Efeitos Limitados, os meios de comunicação de massa possuem influência imediata e unívoca sobre a totalidade do público receptor, moldando comportamentos sem qualquer mediação social.`,
+        text: `Sob a ótica da teoria dos efeitos limitados, a mídia exerce influência direta, homogênea e independente de mediações interpessoais, razão pela qual líderes de opinião têm papel irrelevante na circulação das mensagens.`,
         correct: 'Errado',
         explanation: 'Incorreto. A Teoria dos Efeitos Limitados (Laxarsfeld et al.) defende que a influência da mídia é mediada por relações interpessoais e líderes de opinião (Two-step flow), não sendo direta nem absoluta.',
         reference: 'Teoria dos Efeitos Limitados'
       };
       if (t === 3) return {
-        text: `A Escola de Frankfurt, associada a autores como Adorno e Horkheimer, cunhou o termo "Indústria Cultural" para descrever a mercantilização da arte e da cultura destinadas ao consumo passivo das massas.`,
+        text: `À luz da teoria crítica, o conceito de indústria cultural está associado à padronização mercantil da cultura e à sua circulação como produto voltado ao consumo massificado.`,
         correct: 'Certo',
         explanation: 'Para a teoria crítica alemã, a produção cultural de massa industrializada atua como instrumento de alienação e manutenção do status quo socioeconômico.',
         reference: 'Escola de Frankfurt / Indústria Cultural'
       };
       if (t === 4) return {
-        text: `A hipótese do Newsmaking focaliza as rotinas industriais e organizacionais de produção de notícias, sugerindo que a noticiabilidade é determinada por critérios práticos de facilidade produtiva e limites técnicos.`,
+        text: `No contexto da produção cotidiana da notícia, a perspectiva do newsmaking enfatiza que valores-notícia e decisões editoriais são atravessados por rotinas organizacionais, prazos e limitações materiais da redação.`,
         correct: 'Certo',
         explanation: 'O Newsmaking estuda a construção da notícia sob a ótica do processo fabril das redações, onde restrições de tempo, pessoal e infraestrutura determinam a pauta.',
         reference: 'Teoria do Newsmaking'
       };
       if (t === 5) return {
-        text: `A Teoria Hipodérmica (ou Bala Mágica) pressupõe que as mensagens midiáticas são recebidas e assimiladas de maneira idêntica e imediata por um público atomizado e indefeso.`,
+        text: `Na formulação clássica da teoria hipodérmica, a mensagem midiática é concebida como capaz de atingir um público passivo de maneira direta e uniforme.`,
         correct: 'Certo',
         explanation: 'Esta teoria clássica do início do século XX atribuía aos meios de comunicação um poder absoluto e direto de persuasão e controle de comportamento das massas.',
         reference: 'Teoria Hipodérmica'
       };
       if (t === 6) return {
-        text: `Os critérios de noticiabilidade são estáticos e universais, permanecendo idênticos ao longo do tempo independentemente do surgimento de mídias digitais e de novas rotinas editoriais.`,
+        text: `Considerando as transformações tecnológicas e organizacionais do jornalismo, os critérios de noticiabilidade permanecem estáveis e universais, sem alteração relevante entre contextos históricos ou suportes distintos.`,
         correct: 'Errado',
         explanation: 'Errado. Os critérios de noticiabilidade são dinâmicos, históricos e mudam conforme as tecnologias, a cultura organizacional das redações e o comportamento do público leitor.',
         reference: 'Critérios de Noticiabilidade'
       };
       if (t === 7) return {
-        text: `No modelo comunicacional de Lasswell, a análise da mensagem é sintetizada pela célebre sequência de perguntas que investiga "quem diz, o que diz, por qual canal, a quem e com que efeito".`,
+        text: `No modelo de Lasswell, a análise do processo comunicacional pode ser organizada a partir das perguntas sobre emissor, mensagem, canal, destinatário e efeito.`,
         correct: 'Certo',
         explanation: 'A fórmula de Harold Lasswell estruturou os campos clássicos de estudo da comunicação de massa: emissor, conteúdo, meio, receptor e impacto.',
         reference: 'Modelo de Lasswell'
       };
       if (t === 8) return {
-        text: `A semiótica de Charles Sanders Peirce divide os signos em três categorias fundamentais de acordo com sua relação com o objeto representado: ícone, índice e símbolo.`,
+        text: `Acerca da semiótica peirceana, a distinção entre ícone, índice e símbolo decorre do tipo de relação estabelecida entre o signo e o objeto a que ele remete.`,
         correct: 'Certo',
         explanation: 'Correto. Ícones guardam semelhança física com o objeto; índices apontam ou evidenciam uma relação física direta; símbolos dependem de uma convenção cultural estabelecida.',
         reference: 'Semiótica Peirceana'
       };
       return {
-        text: `O conceito de "Cibercultura", proposto por Pierre Lévy, compreende as mutações sociais e comunicativas provocadas pela interconexão mundial de computadores e a instauração do ciberespaço.`,
+        text: `Sob a perspectiva de Pierre Lévy, a cibercultura diz respeito às transformações nas formas de interação, circulação de conhecimento e sociabilidade decorrentes da expansão do ciberespaço.`,
         correct: 'Certo',
         explanation: 'Lévy discute como a inteligência coletiva e o ciberespaço reorganizam as formas de produção de conhecimento, arte, sociabilidade e cidadania.',
         reference: 'Cibercultura - Pierre Lévy'
@@ -910,61 +911,61 @@ const getTemplatesForCategory = (category: string, index: number): Template => {
 
     case 'Assessoria de Imprensa':
       if (t === 0) return {
-        text: `Diferente do jornalismo de redação, a assessoria de imprensa atua exclusivamente na ocultação sistemática de fatos desfavoráveis à imagem institucional, vedando o acesso das redações a qualquer dado factual real.`,
+        text: `No contexto da comunicação institucional, a assessoria de imprensa atua legitimamente quando restringe o acesso da imprensa a fatos desfavoráveis, de modo a preservar a imagem do assessorado acima do dever de informação.`,
         correct: 'Errado',
         explanation: 'Errado. A assessoria moderna atua na construção de pontes transparentes de informação. Tentar blindar sistematicamente dados desfavoráveis gera ruído, quebra a credibilidade da fonte e amplifica crises.',
         reference: 'Atuação da Assessoria de Imprensa'
       };
       if (t === 1) return {
-        text: `O "press release" deve ser escrito imitando a estrutura de uma matéria jornalística comum (com título informativo, lead e aspas da fonte), de modo a facilitar o aproveitamento direto pelos editores dos jornais.`,
+        text: `Acerca da produção de release, a adoção de linguagem jornalística, com título informativo, lide e identificação clara da fonte, tende a facilitar o aproveitamento editorial do material enviado à imprensa.`,
         correct: 'Certo',
         explanation: 'Ao entregar um texto pronto que respeita os critérios e o formato profissional das redações, o assessor aumenta expressivamente as chances de publicação de forma espontânea.',
         reference: 'Press Release'
       };
       if (t === 2) return {
-        text: `A coletiva de imprensa é um recurso recomendável para qualquer anúncio institucional corriqueiro, devendo ser convocada diariamente para manter o contato pessoal com os repórteres.`,
+        text: `Sob a ótica do relacionamento com a imprensa, a entrevista coletiva deve ser priorizada mesmo em anúncios rotineiros e de baixo impacto, porque sua repetição frequente fortalece automaticamente o vínculo com os repórteres.`,
         correct: 'Errado',
         explanation: 'Errado. Coletivas devem ser reservadas para anúncios de altíssima relevância e interesse público geral, ou gerenciamento de crises agudas. Convocá-las de forma indiscriminada esvazia o evento e irrita os jornalistas.',
         reference: 'Coletivas de Imprensa'
       };
       if (t === 3) return {
-        text: `O "clipping" é a compilação diária das notícias veiculadas na mídia impressa, televisiva, radiofônica e digital que citam a instituição assessorada, servindo de termômetro de imagem pública e subsidiar tomadas de decisão.`,
+        text: `No trabalho da assessoria, o clipping funciona como instrumento de monitoramento da presença institucional na mídia e de apoio à avaliação de imagem e de repercussão.`,
         correct: 'Certo',
         explanation: 'O monitoramento de menções (clipping) permite à gestão avaliar a recepção pública de suas ações, identificar críticas urgentes e calibrar a comunicação governamental.',
         reference: 'Clipping / Clipagem'
       };
       if (t === 4) return {
-        text: `O "mailing list" de uma assessoria de comunicação pública deve ser amplo, segmentado por editorias (política, ciência, economia) e atualizado periodicamente para evitar o envio de pautas a jornalistas incorretos.`,
+        text: `Considerando a gestão de contatos com veículos, um mailing eficiente pressupõe segmentação por editoria, atualização periódica e adequação entre pauta enviada e perfil do jornalista destinatário.`,
         correct: 'Certo',
         explanation: 'Mailing segmentado garante precisão. Enviar pautas de ciência para editores de esporte compromete o prestígio da assessoria junto à redação e caracteriza desperdício de esforço.',
         reference: 'Gestão de Mailing'
       };
       if (t === 5) return {
-        text: `Em gerenciamento de crises de reputação, o uso sistemático de comunicados curtos, verdadeiros e centralizados em um porta-voz treinado ajuda a conter a propagação de boatos e especulações nocivas.`,
+        text: `Em situações de crise reputacional, a centralização do fluxo informativo em porta-voz preparado e o uso de mensagens consistentes tendem a reduzir ruídos e especulações.`,
         correct: 'Certo',
         explanation: 'Centralizar a informação e responder com agilidade técnica e honestidade é a regra máxima das crises de imagem pública corporativa ou governamental.',
         reference: 'Gerenciamento de Crises de Imagem'
       };
       if (t === 6) return {
-        text: `O "house organ" é um veículo de comunicação interna (como jornais impressos, intranet ou newsletters) produzido pela assessoria visando o alinhamento de metas, cultura e valorização dos próprios colaboradores.`,
+        text: `No âmbito da comunicação interna, o house organ pode ser utilizado para divulgar informações institucionais, reforçar a cultura organizacional e aproximar a gestão de seus públicos internos.`,
         correct: 'Certo',
         explanation: 'Os house organs são canais estratégicos voltados para a comunicação interna (endomarketing), promovendo diálogo dentro do corpo funcional.',
         reference: 'House Organs / Comunicação Interna'
       };
       if (t === 7) return {
-        text: `A assessoria de imprensa de um órgão público estadual como a FAPEAL deve priorizar o envio de releases para veículos locais de Alagoas, visando a prestação de contas do fomento científico regional.`,
+        text: `No caso de órgão público estadual com atuação territorialmente delimitada, a priorização de veículos locais pode ser compatível com a lógica de prestação de contas e de comunicação com os públicos diretamente afetados.`,
         correct: 'Certo',
         explanation: 'Como fundação estadual de Alagoas, a divulgação do fomento local na imprensa de Alagoas é crucial para dar visibilidade aos investimentos e beneficiar a população do estado.',
         reference: 'Comunicação Pública Estadual'
       };
       if (t === 8) return {
-        text: `No media training, simulações de entrevistas agressivas (chamadas de "mock interviews") ajudam o porta-voz a manter a serenidade, evitar desvios temáticos e focar nas mensagens estratégicas definidas pela assessoria.`,
+        text: `No media training, a simulação de entrevistas sob pressão pode auxiliar o porta-voz a responder com maior clareza, manter foco temático e lidar melhor com questionamentos adversos.`,
         correct: 'Certo',
         explanation: 'O treinamento prático sob pressão habitua o porta-voz às armadilhas retóricas dos repórteres, resguardando a integridade das informações prestadas pela instituição.',
         reference: 'Simulação no Media Training'
       };
       return {
-        text: `A assessoria de imprensa moderna atua de forma integrada com as equipes de mídias sociais, produzindo conteúdos multimídia que abastecem simultaneamente os jornalistas tradicionais e os canais próprios do órgão.`,
+        text: `À luz da convergência comunicacional, é compatível com a atuação contemporânea da assessoria a produção integrada de conteúdos destinados tanto à imprensa quanto aos canais digitais próprios da instituição.`,
         correct: 'Certo',
         explanation: 'A convergência midiática exige que a comunicação pública atue de forma integrada e multiplataforma, ampliando o alcance das ações de transparência.',
         reference: 'Assessoria de Imprensa Integrada'
@@ -1034,61 +1035,61 @@ const getTemplatesForCategory = (category: string, index: number): Template => {
 
     case 'Marco Legal de CT&I':
       if (t === 0) return {
-        text: `A Lei Federal nº 13.243/2016 estipula que as ICTs públicas federais podem autorizar a participação de seus pesquisadores em projetos de inovação em empresas privadas, compartilhando conhecimento de forma legal.`,
+        text: `À luz do Marco Legal de CT&I, as ICTs públicas podem participar de arranjos cooperativos com empresas e autorizar a atuação de pesquisadores em projetos de inovação, desde que observadas as condições legais e institucionais aplicáveis.`,
         correct: 'Certo',
         explanation: 'O Marco Legal de CT&I estimula a aproximação entre universidade pública e empresas privadas para transferir e aplicar conhecimento científico na geração de inovações reais.',
         reference: 'Lei Federal nº 13.243/2016'
       };
       if (t === 1) return {
-        text: `A subvenção econômica constitui a aplicação de recursos públicos diretamente em empresas privadas, com dispensa de ressarcimento (não reembolsáveis), para o desenvolvimento de projetos de inovação de alto risco.`,
+        text: `No contexto dos instrumentos públicos de fomento à inovação, a subvenção econômica permite o repasse de recursos não reembolsáveis a empresas para apoiar projetos de risco tecnológico relevante.`,
         correct: 'Certo',
         explanation: 'A subvenção econômica é um dos grandes instrumentos regulados pela Lei de Inovação para mitigar os riscos financeiros do desenvolvimento tecnológico privado pioneiro.',
         reference: 'Subvenção Econômica'
       };
       if (t === 2) return {
-        text: `O Marco Legal de CT&I proíbe expressamente que fundações de amparo à pesquisa como a FAPEAL concedam bolsas a pesquisadores de instituições privadas, limitando o fomento apenas a universidades federais.`,
+        text: `Sob a ótica do regime jurídico do fomento científico, é vedado às fundações de amparo à pesquisa conceder bolsas ou apoio a pesquisadores vinculados a instituições privadas, ainda que elas atuem em pesquisa e inovação.`,
         correct: 'Errado',
         explanation: 'Errado. O fomento público à pesquisa científica e tecnológica estende-se a instituições privadas sem fins lucrativos e ICTs privadas credenciadas, visando o desenvolvimento integrado do ecossistema de inovação.',
         reference: 'Fomento a Pesquisa e ICTs Privadas'
       };
       if (t === 3) return {
-        text: `Segundo a Lei de Inovação, a Encomenda Tecnológica é um instrumento de aquisição pública de bens ou serviços que envolvam desenvolvimento tecnológico inovador, contratado mediante inexigibilidade ou dispensa de licitação.`,
+        text: `Considerando os mecanismos de contratação voltados à inovação, a encomenda tecnológica é instrumento destinado à obtenção de solução para problema técnico específico, com assunção de risco tecnológico pela administração.`,
         correct: 'Certo',
         explanation: 'A ETEC permite ao Estado financiar e comprar soluções tecnológicas inéditas diretamente, assumindo de forma ativa o risco tecnológico do fracasso ou sucesso do projeto.',
         reference: 'Encomenda Tecnológica (ETEC)'
       };
       if (t === 4) return {
-        text: `O Plano de Cargos, Carreiras e Vencimentos (PCCV) dos servidores da FAPEAL, regido por legislação estadual própria de Alagoas, visa profissionalizar e estruturar os cargos técnicos da fundação pública de amparo.`,
+        text: `No contexto da estrutura administrativa de fundações públicas de fomento, o PCCV funciona como instrumento de organização funcional, definição de atribuições e progressão na carreira.`,
         correct: 'Certo',
         explanation: 'O PCCV assegura a regularidade funcional, valorização profissional e a continuidade administrativa da fundação, estabelecendo atribuições e critérios de progressão funcional.',
         reference: 'Legislação FAPEAL / PCCV'
       };
       if (t === 5) return {
-        text: `A Lei Estadual nº 8.956/2023 de Alagoas estabelece que o fomento à ciência e tecnologia deve estar associado de forma direta ao desenvolvimento sustentável regional e à erradicação de desigualdades socioeconômicas locais.`,
+        text: `Acerca das políticas estaduais de CT&I, é compatível com a lógica do sistema de fomento vincular pesquisa, inovação e desenvolvimento tecnológico a objetivos de desenvolvimento regional sustentável.`,
         correct: 'Certo',
         explanation: 'A legislação estadual de fomento de Alagoas vincula de forma explícita a pesquisa científica ao avanço social, econômico, ecológico e humano da população alagoana.',
         reference: 'Lei Estadual de Alagoas nº 8.956/2023'
       };
       if (t === 6) return {
-        text: `As compras e contratações destinadas à pesquisa e desenvolvimento tecnológico pelo Marco Legal de CT&I devem seguir ritos burocráticos simplificados e regras próprias de dispensa para garantir agilidade operacional aos cientistas.`,
+        text: `Considerando a necessidade de compatibilizar controle administrativo e dinamismo da pesquisa, o Marco Legal de CT&I admite simplificações procedimentais em contratações e aquisições destinadas a atividades de P&D.`,
         correct: 'Certo',
         explanation: 'A desburocratização de importações e aquisições de insumos laboratoriais é um pilar do marco legal para evitar que lentidões alfandegárias ou licitações longas inviabilizem experimentos.',
         reference: 'Simplificação de Aquisições de Pesquisa'
       };
       if (t === 7) return {
-        text: `No Brasil, as Fundações de Amparo à Pesquisa (FAPs) como a FAPEAL possuem autonomia administrativa e financeira assegurada constitucionalmente, gerindo recursos orçamentários do tesouro estadual para fomento.`,
+        text: `No arranjo institucional brasileiro de fomento científico, as fundações estaduais de amparo à pesquisa operam como agências públicas especializadas na indução e no financiamento de atividades de CT&I.`,
         correct: 'Certo',
         explanation: 'A destinação orçamentária vinculada (porcentagem da receita tributária estadual) garante a estabilidade do fomento científico de longo prazo contra volatilidades políticas.',
         reference: 'Autonomia das FAPs'
       };
       if (t === 8) return {
-        text: `A transferência de tecnologia de uma ICT pública para uma empresa privada, pelo Marco Legal, deve obrigatoriamente exigir do parceiro privado o repasse de 100% dos lucros comerciais para a universidade por tempo indeterminado.`,
+        text: `No regime de transferência de tecnologia entre ICT pública e empresa, a celebração do ajuste depende, obrigatoriamente, do repasse integral e permanente do resultado econômico da exploração comercial para a instituição de origem.`,
         correct: 'Errado',
         explanation: 'Errado. A transferência de tecnologia envolve partilha justa de royalties e licenciamentos contratuais negociados, mas de forma alguma exige a cessão de 100% do faturamento comercial, o que anularia o incentivo financeiro para a empresa inovar.',
         reference: 'Transferência de Tecnologia e Royalties'
       };
       return {
-        text: `O Marco Legal de CT&I prevê o estímulo à criação de arranjos promotores de inovação (como distritos tecnológicos, incubadoras de base tecnológica e parques de ciência) para fomento integrado à inovação empresarial.`,
+        text: `Sob a lógica sistêmica da inovação, o Marco Legal de CT&I favorece a constituição de ambientes promotores de inovação, como parques tecnológicos, incubadoras e outros arranjos cooperativos.`,
         correct: 'Certo',
         explanation: 'A concentração espacial cooperativa de empresas e centros de pesquisa (clusters) potencializa a sinergia produtiva, acelera o intercâmbio de inovações e atrai capital de risco.',
         reference: 'Arranjos Promotores de Inovação'
@@ -1096,61 +1097,61 @@ const getTemplatesForCategory = (category: string, index: number): Template => {
 
     case 'Divulgação Científica':
       if (t === 0) return {
-        text: `A curadoria de conteúdo na divulgação científica compreende selecionar, analisar, contextualizar e reescrever pesquisas acadêmicas para torná-las inteligíveis ao cidadão leigo, preservando o rigor técnico das descobertas.`,
+        text: `Na divulgação científica institucional, a curadoria de conteúdo envolve selecionar achados relevantes, contextualizá-los e traduzi-los em linguagem acessível, sem suprimir os limites metodológicos da pesquisa.`,
         correct: 'Certo',
         explanation: 'A curadoria atua como ponte interpretativa de valor social, decantando teses densas em releases, infográficos ou roteiros de comunicação acessível.',
         reference: 'Curadoria de Conteúdo Científico'
       };
       if (t === 1) return {
-        text: `O jornalismo científico deve centrar-se exclusivamente em traduzir comunicados de assessoria sem qualquer senso crítico, aceitando alegações de laboratórios privados como verdades irrefutáveis.`,
+        text: `Acerca da cobertura jornalística de temas científicos, a função do repórter restringe-se à reprodução fiel de comunicados técnicos, razão pela qual a checagem independente e a análise de conflitos de interesse são etapas dispensáveis.`,
         correct: 'Errado',
         explanation: 'Errado. O jornalismo científico qualificado exige ceticismo saudável, confronto de fontes independentes, verificação de conflitos de interesse de financiamento e contextualização de riscos de testes.',
         reference: 'Senso Crítico no Jornalismo Científico'
       };
       if (t === 2) return {
-        text: `O Manual de Oslo foca no fomento de metodologias para coleta de dados sobre inovação, sendo referência internacional para classificar inovações em Produto, Processo, Marketing e Inovação Organizacional.`,
+        text: `Considerando os referenciais internacionais empregados em estudos de inovação, o Manual de Oslo é utilizado para orientar a coleta e a classificação de dados relativos a processos inovativos em organizações.`,
         correct: 'Certo',
         explanation: 'Publicado pela OCDE, o Manual de Oslo é o padrão global para compreender e mensurar a inovação e o progresso tecnológico nas corporações modernas.',
         reference: 'Classificação de Inovação do Manual de Oslo'
       };
       if (t === 3) return {
-        text: `A análise bibliométrica avalia o prestígio acadêmico e produtividade de cientistas medindo o volume bruto de publicações, ignorando totalmente a métrica de citações recebidas em outros artigos científicos.`,
+        text: `Na análise bibliométrica, o número absoluto de publicações basta, por si só, para medir relevância científica, sendo irrelevantes indicadores como citações, redes de colaboração ou impacto do periódico.`,
         correct: 'Errado',
         explanation: 'Errado. O número de citações que um artigo recebe e o Fator de Impacto dos periódicos que o publicam são métricas bibliométricas centrais para quantificar a real relevância e o prestígio científico das produções acadêmicas.',
         reference: 'Indicadores Bibliométricos'
       };
       if (t === 4) return {
-        text: `A divulgação científica institucional de órgãos públicos ajuda a legitimar socialmente os impostos pagos pelo cidadão, ao demonstrar com clareza como a ciência financiada gera vacinas, novos empregos ou soluções ecológicas.`,
+        text: `No contexto da comunicação pública da ciência, divulgar resultados de pesquisas financiadas com recursos públicos pode reforçar a legitimidade social do investimento estatal em CT&I.`,
         correct: 'Certo',
         explanation: 'Prestar contas do investimento científico confere relevância pública à ciência, engajando os contribuintes no apoio à pesquisa e consolidação de políticas estaduais de CT&I.',
         reference: 'Legitimação Social da Ciência'
       };
       if (t === 5) return {
-        text: `No jornalismo de CT&I, o "Data Storytelling" consiste no uso integrado de bases de dados estatísticos complexos e narrativas visuais intuitivas para facilitar o consumo de métricas de investimento público.`,
+        text: `Sob a ótica do jornalismo de CT&I, o data storytelling combina bases quantitativas, visualização e narrativa para tornar inteligíveis informações técnicas ou volumosas.`,
         correct: 'Certo',
         explanation: 'O storytelling com dados combina números exatos, design gráfico interativo e storytelling cativante para humanizar e esclarecer informações técnicas densas.',
         reference: 'Data Storytelling de Investimentos'
       };
       if (t === 6) return {
-        text: `A Teoria da Tripla Hélice (Triple Helix) estabelece que a inovação tecnológica se desenvolve por meio da articulação sistêmica e dinâmica de três atores chave: Governo, Empresa e Universidade.`,
+        text: `À luz do modelo da Tripla Hélice, a dinâmica da inovação depende da interação entre universidade, governo e setor produtivo.`,
         correct: 'Certo',
         explanation: 'O intercâmbio de demandas e recursos entre Estado, setor industrial produtivo e instituições acadêmicas de pesquisa constitui a base moderna do fomento inovativo de países de ponta.',
         reference: 'Teoria da Tripla Hélice'
       };
       if (t === 7) return {
-        text: `De acordo com a Lei de Acesso à Informação (LAI), dados gerados por pesquisas financiadas integralmente por fomento público não podem ser disponibilizados à sociedade em hipótese alguma, devido ao sigilo laboratorial.`,
+        text: `No contexto do acesso à informação, dados produzidos em pesquisas financiadas com recursos públicos são, por regra, indisponíveis à sociedade, porque o sigilo técnico-científico prevalece de forma absoluta.`,
         correct: 'Errado',
         explanation: 'Errado. Salvo em casos pontuais de patentes industriais em andamento ou segurança nacional de dados estratégicos, o princípio geral que rege o investimento público de ciência é a transparência ativa e a democratização de dados científicos de interesse público.',
         reference: 'Lei de Acesso à Informação (LAI) e Ciência'
       };
       if (t === 8) return {
-        text: `O conceito de "ciência aberta" (Open Science) prega a disponibilização livre de artigos acadêmicos, códigos de softwares de pesquisa e dados brutos de laboratórios para acelerar a validação e o progresso da ciência mundial.`,
+        text: `Acerca da ciência aberta, a disponibilização de artigos, dados e códigos tende a favorecer transparência, reprodutibilidade e cooperação entre pesquisadores, observadas as restrições éticas e legais cabíveis.`,
         correct: 'Certo',
         explanation: 'A ciência aberta reduz barreiras econômicas de acesso a periódicos caros, democratizando a produção de conhecimentos e estimulando a colaboração científica transfronteiriça.',
         reference: 'Ciência Aberta (Open Science)'
       };
       return {
-        text: `O "Manual de Frascati", editado pela OCDE, define as diretrizes para coleta e reporte de dados estatísticos sobre atividades de Pesquisa e Desenvolvimento Experimental (P&D), distinguindo pesquisa básica de pesquisa aplicada.`,
+        text: `No que se refere à mensuração de atividades de P&D, o Manual de Frascati é referência para padronização de conceitos e estatísticas relacionadas à pesquisa e ao desenvolvimento experimental.`,
         correct: 'Certo',
         explanation: 'O Manual de Frascati padroniza internacionalmente o que se conceitua como investimento efetivo em P&D, sendo uma das maiores referências métricas globais ao lado do Manual de Oslo.',
         reference: 'Manual de Frascati'
@@ -1159,66 +1160,368 @@ const getTemplatesForCategory = (category: string, index: number): Template => {
     case 'Ética e Compliance':
     default:
       if (t === 0) return {
-        text: `O Código de Ética dos Jornalistas Brasileiros determina que o repórter não pode aceitar favores, jantares nababescos, viagens gratuitas ou brindes financeiros de fontes interessadas na publicação de matérias elogiosas.`,
+        text: `À luz da ética profissional, o jornalista não deve aceitar vantagens ou benefícios de fontes quando essa relação puder comprometer sua independência editorial ou a credibilidade da cobertura.`,
         correct: 'Certo',
         explanation: 'Preservar a independência editorial e evitar conflitos de interesse flagrantes que comprometam a veracidade factual do noticiário é um dever ético fundamental de todo jornalista.',
         reference: 'Código de Ética dos Jornalistas'
       };
       if (t === 1) return {
-        text: `O direito de resposta assegurado constitucionalmente no Brasil garante ao ofendido por matéria jornalística equivocada o espaço correspondente e proporcional para refutar de forma pública as falsas acusações, de forma gratuita.`,
+        text: `Acerca das garantias constitucionais relacionadas à atividade de imprensa, o direito de resposta assegura ao ofendido reparação proporcional ao agravo, sem prejuízo de eventual indenização.`,
         correct: 'Certo',
         explanation: 'O direito de resposta (Art. 5º, V da CF) repara administrativamente ou judicialmente os danos morais ou factuais causados por publicações caluniosas ou erradas.',
         reference: 'Direito de Resposta na Constituição Federal'
       };
       if (t === 2) return {
-        text: `Segundo a ética jornalística, caso uma fonte repasse um dado confidencial de forma extraoficial (sob a condição técnica de "off-the-record"), o jornalista tem o direito de divulgar o nome da fonte caso receba muitas curtidas.`,
+        text: `No trato ético com informações recebidas em off, a proteção conferida à identidade da fonte pode ser afastada pelo jornalista sempre que a divulgação do nome gerar ampla repercussão pública nas redes.`,
         correct: 'Errado',
         explanation: 'Errado. O compromisso ético de resguardar uma fonte que falou sob regime de "off" é absoluto e inegociável, independentemente de engajamento social, pressões de assessores ou visibilidade comercial.',
         reference: 'Compromisso com Fontes Confidenciais'
       };
       if (t === 3) return {
-        text: `O Código de Ética dos Jornalistas Brasileiros prevê que o jornalista tem o dever de opor-se à divulgação de informações obtidas de forma ilícita, invasões ilegais de privacidade ou de gravações clandestinas sem justificativa de relevante interesse público.`,
+        text: `Considerando os limites éticos da apuração, o jornalista deve resistir à divulgação de material obtido por meios ilícitos ou mediante violação abusiva da privacidade, ressalvadas hipóteses de inequívoco interesse público.`,
         correct: 'Certo',
         explanation: 'A invasão de privacidade e métodos ilícitos de apuração são vedados pelo código, salvo quando há evidente e supremo interesse coletivo em expor atos de corrupção ou crimes ocultos.',
         reference: 'Ética na Apuração Jornalística'
       };
       if (t === 4) return {
-        text: `Como órgão público regido pelo Estatuto do Servidor de Alagoas, a FAPEAL deve submeter-se de forma ativa ao compliance público, o que veda o nepotismo e exige o tratamento igualitário de todos os pesquisadores proponentes em editais.`,
+        text: `No contexto do compliance público, a gestão de editais e programas de fomento deve observar impessoalidade, moralidade administrativa e prevenção de conflitos de interesse.`,
         correct: 'Certo',
         explanation: 'A impessoalidade e a moralidade administrativa asseguram que o fomento público de Alagoas seja distribuído de forma justa e transparente por mérito científico, em total compliance com a lei.',
         reference: 'Princípios da Administração Pública / FAPEAL'
       };
       if (t === 5) return {
-        text: `No Brasil, os crimes contra a honra (calúnia, difamação e injúria) cometidos por jornalistas em meios de comunicação social foram completamente extintos do Código Penal, garantindo liberdade total de ofensa pessoal a repórteres.`,
+        text: `A liberdade de imprensa afasta, por completo, a possibilidade de responsabilização penal por calúnia, injúria ou difamação praticadas no exercício da atividade jornalística.`,
         correct: 'Errado',
         explanation: 'Errado. A liberdade de expressão não confere direito de ofensa impune. Os crimes de injúria, calúnia e difamação continuam vigentes no Código Penal e podem acarretar responsabilização civil e penal.',
         reference: 'Crimes contra a Honra e Liberdade de Imprensa'
       };
       if (t === 6) return {
-        text: `A censura prévia de qualquer natureza é proibida pela Constituição Federal de 1988, devendo o jornalista responder de forma posterior por eventuais abusos, mentiras deliberadas ou excessos comprovados na justiça.`,
+        text: `Sob a ótica constitucional, a vedação à censura prévia convive com a possibilidade de responsabilização posterior por abusos cometidos no exercício da liberdade de expressão.`,
         correct: 'Certo',
         explanation: 'A constituição garante a plena liberdade de imprensa e veda a censura governamental prévia. Eventuais ofensas, calúnias ou mentiras devem ser julgadas e punidas com o devido processo legal a posteriori.',
         reference: 'Liberdade de Expressão e Censura Prévia'
       };
       if (t === 7) return {
-        text: `O Código de Ética dos Jornalistas preceitua que a divulgação de notícias comete erro de omissão deliberada quando oculta de forma culposa dados factuais fundamentais que alteram o entendimento de um acontecimento social relevante.`,
+        text: `Acerca da fidelidade informativa, a omissão de elementos factuais essenciais pode comprometer a veracidade do relato, mesmo quando os dados publicados individualmente estejam corretos.`,
         correct: 'Certo',
         explanation: 'A omissão culposa ou dolosa de contextos essenciais viola o compromisso ético de fidelidade à verdade factual, induzindo o público ao erro por enquadramento capcioso.',
         reference: 'Fidelidade Factual e Omissões'
       };
       if (t === 8) return {
-        text: `O jornalista que exerce cargo comissionado ou técnico de assessoria em órgão público do Estado de Alagoas deve atuar pautado pela defesa da moralidade governamental, recusando-se a redigir peças de propaganda político-partidária de gestores.`,
+        text: `No exercício da assessoria em órgão público, é incompatível com a ética funcional a produção de peças de promoção político-partidária sob a aparência de comunicação institucional.`,
         correct: 'Certo',
         explanation: 'O profissional em assessoria pública deve servir ao Estado de Alagoas e à população, não devendo instrumentalizar sua função para promoção político-partidária de governantes no exercício do cargo.',
         reference: 'Ética na Assessoria Pública'
       };
       return {
-        text: `O Código de Conduta da Administração Pública Estadual de Alagoas veda de forma expressa o recebimento de presentes e vantagens pessoais de pessoas físicas ou jurídicas de direito privado que possuam interesse direto em decisões de editais da FAPEAL.`,
+        text: `À luz das regras de integridade administrativa, é vedado ao agente público receber vantagens de particulares que possuam interesse direto em decisões relacionadas a editais, contratos ou processos de seleção.`,
         correct: 'Certo',
         explanation: 'A moralidade administrativa veda quaisquer doações, cortesias corporativas ou mimos financeiros a servidores públicos estaduais que possam configurar conflito de interesse ou prevaricação de julgamento em seleções públicas.',
         reference: 'Código de Conduta da Administração Pública / Compliance'
       };
   }
+};
+
+const countBinaryAnswers = (questions: Array<Pick<Question, 'correct'>>) => {
+  return questions.reduce(
+    (acc, q) => {
+      if (q.correct === 'Certo') acc.certo++;
+      if (q.correct === 'Errado') acc.errado++;
+      return acc;
+    },
+    { certo: 0, errado: 0 }
+  );
+};
+
+const stableHash = (value: string): number => {
+  let hash = 0;
+  for (let i = 0; i < value.length; i++) {
+    hash = (hash * 31 + value.charCodeAt(i)) >>> 0;
+  }
+  return hash;
+};
+
+const pickBalancedAnswer = (
+  counts: { certo: number; errado: number },
+  seed: string
+): 'Certo' | 'Errado' => {
+  const diff = counts.certo - counts.errado;
+
+  if (diff >= 3) return 'Errado';
+  if (diff <= -3) return 'Certo';
+
+  return stableHash(seed) % 2 === 0 ? 'Certo' : 'Errado';
+};
+
+const cebraspeContextOpeners = [
+  'Considerando as rotinas de produção, circulação e validação social da notícia, julgue o item subsequente:',
+  'Acerca das práticas profissionais do jornalismo e de seus efeitos na construção da informação, avalie a assertiva a seguir:',
+  'Sob a ótica das técnicas de apuração, edição e apresentação do conteúdo jornalístico, julgue o item seguinte:',
+  'À luz dos princípios que orientam a atividade jornalística contemporânea, analise a afirmação subsequente:',
+  'No contexto das relações entre redação, fontes, públicos e critérios editoriais, julgue a proposição a seguir:',
+  'Considerando situações típicas da prática jornalística e institucional, avalie o item seguinte:',
+  'Acerca da linguagem, dos gêneros e das rotinas de mediação da informação, julgue a assertiva:',
+  'Sob a perspectiva da comunicação social aplicada a ambientes impressos, digitais e institucionais, julgue o item:'
+];
+
+const weakOpeningPattern = /^(A|O|As|Os|Na|No|Em|Para|Segundo|Diferente|Como|Público|Fonte|Lead|Release|Mailing|Clipping|Newsletter|Boletim|Relatório|Transparência|Prestação|Justificação|Alinhamento|Hierarquia|Editoração|Grid|Entrelinha|Engajamento|Impressões|Taxa|Métricas|CTR|SEO|Analytics|Controlador|Anonimização|Consentimento|Tratamento|Dados|Ambientes|Inteligência|Mapas|Redes|Universidades|ICTs|Incubadoras|Living labs|Bibliometria|O índice|Patentes|Sistemas|Transferência)\b/;
+
+const hasCebraspeContext = (text: string) =>
+  /(Considerando|Acerca de|Sob a ótica de|À luz de|No contexto de|A respeito de|Com relação a)/.test(text);
+
+const isCodevasf2024Question = (question: Question) =>
+  question.reference?.startsWith('CODEVASF 2024 - Item ') ?? false;
+
+const contextualizeJournalismQuestion = (question: Question): Question => {
+  if (
+    question.category !== 'Conhecimentos Específicos - Jornalismo' ||
+    isCodevasf2024Question(question) ||
+    hasCebraspeContext(question.text)
+  ) {
+    return question;
+  }
+
+  const match = question.text.match(/^\[([^\]]+)\]\s*(.+)$/);
+  if (!match) return question;
+
+  const [, area, rawBody] = match;
+  const body = rawBody.trim();
+
+  if (!weakOpeningPattern.test(body)) return question;
+
+  const opener =
+    cebraspeContextOpeners[
+      stableHash(`${question.reference ?? question.id}-${area}-${body}`) % cebraspeContextOpeners.length
+    ];
+  const normalizedBody = body.charAt(0).toLowerCase() + body.slice(1);
+
+  return {
+    ...question,
+    text: `[${area}] ${opener} ${normalizedBody}`
+  };
+};
+
+const orderQuestionsByAnswerVariety = (questions: Question[]): Question[] => {
+  const pending = [...questions];
+  const ordered: Question[] = [];
+
+  while (pending.length > 0) {
+    const recent = ordered.slice(-3);
+    let currentRunLength = 1;
+    const lastPlaced = ordered[ordered.length - 1];
+    for (let i = ordered.length - 2; i >= 0; i--) {
+      if (ordered[i].correct !== lastPlaced?.correct) break;
+      currentRunLength++;
+    }
+    const lastAnswer = ordered[ordered.length - 1]?.correct;
+    const previousAnswer = ordered[ordered.length - 2]?.correct;
+
+    let candidates = pending.filter(question => question.correct !== 'Anulada');
+
+    if (lastAnswer && currentRunLength >= 3) {
+      const breakers = candidates.filter(question => question.correct !== lastAnswer);
+      if (breakers.length > 0) candidates = breakers;
+    } else if (
+      lastAnswer &&
+      previousAnswer &&
+      lastAnswer === previousAnswer &&
+      stableHash(`break-${ordered.length}-${lastAnswer}`) % 2 === 0
+    ) {
+      const breakers = candidates.filter(question => question.correct !== lastAnswer);
+      if (breakers.length > 0) candidates = breakers;
+    }
+
+    const recentCategories = new Set(recent.map(question => question.text.match(/^\[([^\]]+)\]/)?.[1] ?? ''));
+    const categoryDiversified = candidates.filter(
+      question => !recentCategories.has(question.text.match(/^\[([^\]]+)\]/)?.[1] ?? '')
+    );
+    if (categoryDiversified.length > 0) candidates = categoryDiversified;
+
+    const next = candidates.sort((a, b) => {
+      const scoreA = stableHash(`${a.reference ?? a.text}-${ordered.length}`);
+      const scoreB = stableHash(`${b.reference ?? b.text}-${ordered.length}`);
+      return scoreA - scoreB;
+    })[0] ?? pending[0];
+
+    ordered.push(next);
+    pending.splice(pending.indexOf(next), 1);
+  }
+
+  return ordered;
+};
+
+const getBalancedTemplateForCategory = (
+  category: string,
+  seedIndex: number,
+  desiredAnswer: 'Certo' | 'Errado'
+): Template => {
+  const baseOffset = stableHash(`${category}-${seedIndex}-${desiredAnswer}`) % 17;
+
+  for (let offset = 0; offset < 70; offset++) {
+    const template = getTemplatesForCategory(category, seedIndex + baseOffset + offset);
+    if (template.correct === desiredAnswer) return template;
+  }
+
+  return getTemplatesForCategory(category, seedIndex + baseOffset);
+};
+
+const balancingErradoTemplates = [
+  {
+    category: 'Teoria da Comunicação',
+    text: 'a hipótese do agenda-setting sustenta que os meios de comunicação determinam, de forma direta e uniforme, a opinião final do público sobre cada tema pautado, dispensando mediações sociais, repertório prévio e disputas interpretativas.',
+    explanation: 'Errado. O agenda-setting trata da capacidade de influenciar a saliência dos temas na agenda pública, não de determinar automaticamente a opinião final dos indivíduos.',
+    reference: 'Agenda-setting'
+  },
+  {
+    category: 'Teoria da Comunicação',
+    text: 'o gatekeeping desloca integralmente para as fontes oficiais a responsabilidade de selecionar os fatos noticiáveis, cabendo à redação apenas publicar o material recebido, sem hierarquização editorial.',
+    explanation: 'Errado. Gatekeeping envolve filtros e decisões editoriais nas redações; fontes podem influenciar a pauta, mas não substituem a seleção jornalística.',
+    reference: 'Gatekeeping'
+  },
+  {
+    category: 'Técnicas de Redação',
+    text: 'a pirâmide invertida recomenda que a informação principal seja preservada para o encerramento da matéria, de modo a criar suspense narrativo típico do texto ficcional.',
+    explanation: 'Errado. Na pirâmide invertida, as informações mais relevantes aparecem no início do texto, seguidas por detalhes de menor hierarquia.',
+    reference: 'Pirâmide invertida'
+  },
+  {
+    category: 'Técnicas de Redação',
+    text: 'o lide clássico dispensa a identificação do fato central quando a matéria contém declarações de autoridade pública, pois a relevância da fonte substitui a necessidade de responder às perguntas essenciais do acontecimento.',
+    explanation: 'Errado. A autoridade da fonte não elimina a necessidade de clareza sobre o fato, seus sujeitos, circunstâncias e relevância.',
+    reference: 'Lide jornalístico'
+  },
+  {
+    category: 'Assessoria de Imprensa',
+    text: 'o release institucional deve ser redigido preferencialmente como peça publicitária laudatória, com adjetivação intensa, uma vez que sua finalidade é substituir a apuração independente do jornalista.',
+    explanation: 'Errado. O release deve ter linguagem jornalística, informação verificável, interesse público ou editorial e não substitui a autonomia de apuração da redação.',
+    reference: 'Release'
+  },
+  {
+    category: 'Assessoria de Imprensa',
+    text: 'em situação de crise, a assessoria deve pulverizar versões diferentes entre porta-vozes, pois a multiplicidade de narrativas reduz a chance de questionamento público.',
+    explanation: 'Errado. Crises exigem coerência, centralização de informações, transparência possível e porta-vozes preparados para evitar ruídos e contradições.',
+    reference: 'Gestão de crise'
+  },
+  {
+    category: 'Jornalismo Digital',
+    text: 'a hipertextualidade no webjornalismo elimina a responsabilidade de organizar a narrativa, pois a existência de links, por si só, assegura compreensão plena e percurso informativo coerente ao leitor.',
+    explanation: 'Errado. Links ampliam caminhos de leitura, mas a narrativa ainda precisa de organização, hierarquia e contexto.',
+    reference: 'Hipertextualidade'
+  },
+  {
+    category: 'Jornalismo Digital',
+    text: 'métricas de audiência devem substituir integralmente os critérios editoriais, de modo que conteúdos de maior taxa de clique sejam automaticamente considerados os mais relevantes do ponto de vista público.',
+    explanation: 'Errado. Métricas auxiliam decisões, mas não substituem interesse público, checagem, responsabilidade editorial e critérios jornalísticos.',
+    reference: 'Métricas digitais'
+  },
+  {
+    category: 'Ética e Compliance',
+    text: 'o sigilo da fonte autoriza o jornalista a publicar qualquer informação sem checagem, pois a proteção constitucional transfere à fonte confidencial toda a responsabilidade pela veracidade do conteúdo divulgado.',
+    explanation: 'Errado. O sigilo protege a identidade da fonte, mas não dispensa apuração, checagem e responsabilidade profissional sobre o que é publicado.',
+    reference: 'Sigilo de fonte'
+  },
+  {
+    category: 'Ética e Compliance',
+    text: 'a vedação à censura prévia impede qualquer responsabilização posterior por calúnia, difamação, injúria, erro deliberado ou violação abusiva de direitos individuais.',
+    explanation: 'Errado. A Constituição veda censura prévia, mas admite responsabilização posterior por abusos, danos e ilícitos.',
+    reference: 'Liberdade de imprensa'
+  },
+  {
+    category: 'Comunicação Pública',
+    text: 'a comunicação pública em órgãos estatais deve priorizar a promoção pessoal de gestores sempre que a ação divulgada tiver resultado positivo, pois a autoria política prevalece sobre a impessoalidade administrativa.',
+    explanation: 'Errado. Comunicação pública deve observar interesse público, impessoalidade, utilidade social e prestação de contas, sem promoção pessoal.',
+    reference: 'Comunicação pública'
+  },
+  {
+    category: 'Produtos de Assessoria',
+    text: 'mailing e clipping são produtos equivalentes, ambos voltados ao arquivamento de matérias já publicadas sobre a instituição assessorada.',
+    explanation: 'Errado. Mailing é cadastro segmentado de contatos; clipping é monitoramento e registro de publicações.',
+    reference: 'Mailing e clipping'
+  },
+  {
+    category: 'Editoração e Projeto Gráfico',
+    text: 'a escolha tipográfica é etapa meramente decorativa do projeto gráfico, sem impacto sobre legibilidade, hierarquia informativa ou identidade editorial.',
+    explanation: 'Errado. Tipografia afeta leitura, organização da informação, reconhecimento visual e adequação do produto jornalístico.',
+    reference: 'Tipografia'
+  },
+  {
+    category: 'Divulgação Científica',
+    text: 'a divulgação científica institucional deve suprimir incertezas, limitações metodológicas e conflitos de interesse, pois tais elementos enfraquecem a adesão pública à ciência.',
+    explanation: 'Errado. Comunicação científica responsável contextualiza achados, limites, riscos e incertezas sem transformar divulgação em propaganda enganosa.',
+    reference: 'Divulgação científica'
+  }
+];
+
+const balancingContexts = [
+  'Considerando a cobertura de temas sensíveis por órgãos públicos e veículos jornalísticos, julgue o item seguinte:',
+  'Acerca das rotinas profissionais de apuração, edição e relacionamento com fontes, avalie a assertiva:',
+  'Sob a ótica da comunicação pública, da ética profissional e da organização do trabalho jornalístico, julgue o item:',
+  'À luz das transformações digitais e das teorias clássicas do jornalismo, analise a afirmação a seguir:',
+  'No contexto de assessorias de imprensa, redações integradas e circulação multiplataforma de notícias, julgue a proposição:',
+  'Considerando a distinção entre interesse público, visibilidade institucional e critérios de noticiabilidade, avalie o item:',
+  'Acerca da produção de conteúdo jornalístico em ambientes institucionais e digitais, julgue a assertiva subsequente:',
+  'Sob a perspectiva das práticas contemporâneas de comunicação social, analise o item seguinte:'
+];
+
+const createBalancingErradoQuestion = (id: number, index: number): Question => {
+  const template =
+    balancingErradoTemplates[stableHash(`balancing-template-${index}`) % balancingErradoTemplates.length];
+  const context =
+    balancingContexts[stableHash(`balancing-context-${index}`) % balancingContexts.length];
+
+  return {
+    id,
+    category: 'Conhecimentos Específicos - Jornalismo',
+    text: `[${template.category}] ${context} ${template.text} (Item inédito de equilíbrio JOR-${index + 1})`,
+    correct: 'Errado',
+    explanation: template.explanation,
+    reference: `CEBRASPE - ${template.reference} - questão inédita de equilíbrio`
+  };
+};
+
+const balanceJournalismSpecificAnswers = (questions: Question[]): Question[] => {
+  const balanced = [...questions];
+  const countSpecific = () => countBinaryAnswers(
+    balanced.filter(q => q.category === 'Conhecimentos Específicos - Jornalismo')
+  );
+
+  let counts = countSpecific();
+  let balanceIndex = 0;
+  let nextId = Math.max(...balanced.map(q => q.id), 0) + 1;
+
+  while (counts.errado < counts.certo - 1) {
+    balanced.push(createBalancingErradoQuestion(nextId, balanceIndex));
+    nextId++;
+    balanceIndex++;
+    counts = countSpecific();
+  }
+
+  return balanced;
+};
+
+const polishAndReorderJournalismQuestions = (questions: Question[]): Question[] => {
+  const journalismSpecific = questions
+    .filter(question => question.category === 'Conhecimentos Específicos - Jornalismo')
+    .map(contextualizeJournalismQuestion);
+  const nonSpecific = questions.filter(
+    question => question.category !== 'Conhecimentos Específicos - Jornalismo'
+  );
+
+  const anuladas = journalismSpecific.filter(question => question.correct === 'Anulada');
+  const binary = journalismSpecific.filter(question => question.correct !== 'Anulada');
+  const orderedBinary = orderQuestionsByAnswerVariety(binary);
+  const rebuilt = [...orderedBinary, ...anuladas].map((question, index) => ({
+    ...question,
+    id: index + 1
+  }));
+
+  const offset = rebuilt.length;
+  const rebuiltNonSpecific = nonSpecific.map((question, index) => ({
+    ...question,
+    id: offset + index + 1
+  }));
+
+  return [...rebuilt, ...rebuiltNonSpecific];
 };
 
 // Programmatically build exactly 300 highly professional, distinct questions for journalism
@@ -1238,6 +1541,19 @@ export const getJournalismQuestions = (): Question[] => {
   });
 
   // 2. Add hand-crafted supplemental questions for requested pending topics
+  codevasf2024JournalismQuestions.forEach(q => {
+    result.push({
+      id: result.length + 1,
+      category: mapCategory(q.category),
+      text: q.text,
+      correct: q.correct,
+      explanation: q.explanation,
+      reference: q.reference,
+      passageId: q.passageId
+    });
+  });
+
+  // 3. Add hand-crafted supplemental questions for requested pending topics
   supplementalJournalismQuestions.forEach(q => {
     result.push({
       id: result.length + 1,
@@ -1249,7 +1565,7 @@ export const getJournalismQuestions = (): Question[] => {
     });
   });
 
-  // 3. Add expanded requested topics with explicit coverage
+  // 4. Add expanded requested topics with explicit coverage
   expandedRequestedJournalismQuestions.forEach(q => {
     result.push({
       id: result.length + 1,
@@ -1261,7 +1577,7 @@ export const getJournalismQuestions = (): Question[] => {
     });
   });
 
-  // 4. Loop to generate up to 520 questions
+  // 5. Loop to generate up to 520 questions
   const totalTarget = 520;
   const numToGen = totalTarget - result.length;
 
@@ -1269,7 +1585,12 @@ export const getJournalismQuestions = (): Question[] => {
     const questionId = result.length + 1;
     // Rotate through categories beautifully
     const category = categories[i % categories.length];
-    const template = getTemplatesForCategory(category, i);
+    const answerCounts = countBinaryAnswers(result);
+    const desiredAnswer = pickBalancedAnswer(
+      answerCounts,
+      `${category}-${i}-${result.length}`
+    );
+    const template = getBalancedTemplateForCategory(category, i, desiredAnswer);
 
     // Apply some slight linguistic variations to ensure unique descriptions per ID
     const variations = [
@@ -1291,7 +1612,7 @@ export const getJournalismQuestions = (): Question[] => {
     });
   }
 
-  // 5. Append core questions (Português, Inglês, TI Básica, Legislação, Alagoas) with non-overlapping IDs
+  // 6. Append core questions (Português, Inglês, TI Básica, Legislação, Alagoas) with non-overlapping IDs
   let currentMaxId = Math.max(...result.map(q => q.id), 300);
   quizQuestions.forEach(q => {
     // Include all core questions for journalism
@@ -1302,5 +1623,7 @@ export const getJournalismQuestions = (): Question[] => {
     });
   });
 
-  return deduplicateQuestions(result);
+  return polishAndReorderJournalismQuestions(
+    balanceJournalismSpecificAnswers(deduplicateQuestions(result))
+  );
 };

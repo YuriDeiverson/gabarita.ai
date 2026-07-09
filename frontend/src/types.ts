@@ -33,7 +33,7 @@ export interface Question {
   id: number;
   category: QuestionCategory;
   text: string;
-  correct: 'Certo' | 'Errado';
+  correct: 'Certo' | 'Errado' | 'Anulada';
   explanation: string;
   reference?: string; // e.g., "CEBRASPE - TRT 8 - 2022"
   passageId?: string; // e.g., "capitalismo-vigilancia"

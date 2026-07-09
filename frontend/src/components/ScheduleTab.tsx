@@ -93,7 +93,7 @@ export default function ScheduleTab() {
     if (config) {
       try {
         const parsed = JSON.parse(config);
-        if (parsed.studyPlanId) {
+        if (parsed.studyPlanId && !String(parsed.studyPlanId).startsWith('local-')) {
           await scheduleApi.saveProgress({
             studyPlanId: parsed.studyPlanId,
             blockId,

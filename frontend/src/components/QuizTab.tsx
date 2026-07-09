@@ -29,7 +29,7 @@ export default function QuizTab() {
   });
 
   const [categoryFilter, setCategoryFilter] = useState<QuestionCategory | 'Todos'>('Todos');
-  const [statusFilter, setStatusFilter] = useState<'Todos' | 'Respondidas' | 'Não Respondidas' | 'Corretas' | 'Incorretas'>('Todos');
+  const [statusFilter, setStatusFilter] = useState<'Todos' | 'Respondidas' | 'Não Respondidas' | 'Corretas' | 'Incorretas' | 'Anuladas'>('Todos');
   const [expandedPassages, setExpandedPassages] = useState<{ [key: number]: boolean }>({});
 
   // Sync answers with localStorage
@@ -45,6 +45,7 @@ export default function QuizTab() {
   const handleAnswer = async (questionId: number, option: 'Certo' | 'Errado') => {
     const question = questions.find(q => q.id === questionId);
     if (!question) return;
+    if (question.correct === 'Anulada') return;
 
     setAnswers(prev => ({
       ...prev,
@@ -56,7 +57,7 @@ export default function QuizTab() {
     if (config) {
       try {
         const parsed = JSON.parse(config);
-        if (parsed.studyPlanId) {
+        if (parsed.studyPlanId && !String(parsed.studyPlanId).startsWith('local-')) {
           const isCorrect = option === question.correct;
           await quizProgressApi.create({
             studyPlanId: parsed.studyPlanId,
@@ -88,12 +89,16 @@ export default function QuizTab() {
 
   // Calculate statistics
   const stats = useMemo(() => {
-    const total = questions.length;
-    const answeredCount = Object.keys(answers).length;
+    const validQuestions = questions.filter(q => q.correct !== 'Anulada');
+    const total = validQuestions.length;
+    const answeredCount = Object.keys(answers).filter(id => {
+      const question = questions.find(q => q.id === Number(id));
+      return question && question.correct !== 'Anulada';
+    }).length;
     let correctCount = 0;
     let incorrectCount = 0;
 
-    questions.forEach(q => {
+    validQuestions.forEach(q => {
       const userAnswer = answers[q.id];
       if (userAnswer) {
         if (userAnswer === q.correct) {
@@ -133,16 +138,19 @@ export default function QuizTab() {
       // Status filter
       let statusMatch = true;
       const userAnswer = answers[q.id];
-      const isCorrect = userAnswer === q.correct;
+      const isAnnulled = q.correct === 'Anulada';
+      const isCorrect = !isAnnulled && userAnswer === q.correct;
 
       if (statusFilter === 'Respondidas') {
-        statusMatch = !!userAnswer;
+        statusMatch = !isAnnulled && !!userAnswer;
       } else if (statusFilter === 'Não Respondidas') {
-        statusMatch = !userAnswer;
+        statusMatch = !isAnnulled && !userAnswer;
       } else if (statusFilter === 'Corretas') {
         statusMatch = !!userAnswer && isCorrect;
       } else if (statusFilter === 'Incorretas') {
-        statusMatch = !!userAnswer && !isCorrect;
+        statusMatch = !isAnnulled && !!userAnswer && !isCorrect;
+      } else if (statusFilter === 'Anuladas') {
+        statusMatch = isAnnulled;
       }
 
       return categoryMatch && statusMatch;
@@ -184,14 +192,14 @@ export default function QuizTab() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <div className="bg-slate-50 p-3 rounded-lg text-center">
               <span className="text-xs text-slate-500 block">Respondidas</span>
-              <span className="text-xl font-bold text-slate-800">{Object.keys(answers).length} / {questions.length}</span>
+              <span className="text-xl font-bold text-slate-800">{stats.answeredCount} / {stats.total}</span>
             </div>
             <div className="bg-emerald-50 p-3 rounded-lg text-center">
               <span className="text-xs text-emerald-800 font-bold">Acertos</span>
               <p className="text-xl font-bold text-emerald-600 mt-1">
                 {Object.keys(answers).filter(id => {
                   const q = questions.find(q => q.id === Number(id));
-                  return q && answers[Number(id)] === q.correct;
+                  return q && q.correct !== 'Anulada' && answers[Number(id)] === q.correct;
                 }).length}
               </p>
             </div>
@@ -200,20 +208,20 @@ export default function QuizTab() {
               <p className="text-rose-600 mt-1 text-xl font-bold font-mono">
                 {Object.keys(answers).filter(id => {
                   const q = questions.find(q => q.id === Number(id));
-                  return q && answers[Number(id)] !== q.correct;
+                  return q && q.correct !== 'Anulada' && answers[Number(id)] !== q.correct;
                 }).length}
               </p>
             </div>
             <div className="bg-slate-50 p-3 rounded-lg text-center">
               <span className="font-bold text-slate-800 text-xs">Aproveitamento</span>
               <p className="text-slate-900 mt-1 text-base font-bold">
-                {Object.keys(answers).length > 0
+                {stats.answeredCount > 0
                   ? Math.round(
                       (Object.keys(answers).filter(id => {
                         const q = questions.find(q => q.id === Number(id));
-                        return q && answers[Number(id)] === q.correct;
+                        return q && q.correct !== 'Anulada' && answers[Number(id)] === q.correct;
                       }).length /
-                        Object.keys(answers).length) *
+                        stats.answeredCount) *
                         100
                     )
                   : 0}
@@ -262,7 +270,7 @@ export default function QuizTab() {
               <span className="text-4xl font-extrabold font-mono tracking-tight text-white">
                 {scoreMode === 'tradicional' ? stats.cebraspeScore : stats.simpleScore}
               </span>
-              <span className="text-slate-400 text-sm">/ {questions.length} pts</span>
+              <span className="text-slate-400 text-sm">/ {stats.total} pts</span>
             </div>
             <p className="text-xs text-slate-400 leading-normal">
               {scoreMode === 'tradicional' 
@@ -311,6 +319,7 @@ export default function QuizTab() {
             <option value="Não Respondidas">Não Respondidas</option>
             <option value="Corretas">Corretas</option>
             <option value="Incorretas">Incorretas</option>
+            <option value="Anuladas">Anuladas</option>
           </select>
         </div>
       </div>
@@ -325,14 +334,17 @@ export default function QuizTab() {
           filteredQuestions.map((q, index) => {
             const userAnswer = answers[q.id];
             const isAnswered = !!userAnswer;
-            const isCorrect = userAnswer === q.correct;
+            const isAnnulled = q.correct === 'Anulada';
+            const isCorrect = !isAnnulled && userAnswer === q.correct;
 
             return (
               <div
                 key={q.id}
                 id={`q-card-${q.id}`}
                 className={`bg-white rounded-xl shadow-xs border transition-all overflow-hidden ${
-                  isAnswered
+                  isAnnulled
+                    ? 'border-amber-200 bg-amber-50/20'
+                    : isAnswered
                     ? isCorrect
                       ? 'border-emerald-200 bg-emerald-50/10'
                       : 'border-rose-200 bg-rose-50/10'
@@ -382,6 +394,12 @@ export default function QuizTab() {
 
                   {/* Actions (Buttons for answering) */}
                   <div className="flex items-center gap-3">
+                    {isAnnulled ? (
+                      <span className="px-4 py-2 rounded-lg text-sm font-bold border border-amber-200 bg-amber-50 text-amber-800">
+                        Questão anulada
+                      </span>
+                    ) : (
+                      <>
                     <button
                       id={`btn-certo-${q.id}`}
                       onClick={() => handleAnswer(q.id, 'Certo')}
@@ -408,11 +426,17 @@ export default function QuizTab() {
                     >
                       Errado
                     </button>
+                      </>
+                    )}
 
                     {/* Quick indicator icon */}
-                    {isAnswered && (
+                    {(isAnswered || isAnnulled) && (
                       <div className="flex items-center gap-1.5 ml-2 text-xs font-bold">
-                        {isCorrect ? (
+                        {isAnnulled ? (
+                          <span className="text-amber-700 flex items-center gap-1">
+                            <AlertCircle className="w-4 h-4" /> Anulada
+                          </span>
+                        ) : isCorrect ? (
                           <span className="text-emerald-600 flex items-center gap-1">
                             <CheckCircle2 className="w-4 h-4" /> Gabaritou!
                           </span>
@@ -426,9 +450,11 @@ export default function QuizTab() {
                   </div>
 
                   {/* Educational Feedback Section */}
-                  {isAnswered && (
+                  {(isAnswered || isAnnulled) && (
                     <div className={`p-4 rounded-xl border text-xs leading-relaxed space-y-1 transition-all ${
-                      isCorrect 
+                      isAnnulled
+                        ? 'bg-amber-50 text-amber-800 border-amber-100'
+                        : isCorrect 
                         ? 'bg-emerald-50 text-emerald-800 border-emerald-100'
                         : 'bg-rose-50 text-rose-800 border-rose-100'
                     }`}>

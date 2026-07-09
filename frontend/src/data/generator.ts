@@ -624,6 +624,15 @@ export const COURSES_CONFIG: {
   }
 };
 
+const uniqueById = <T extends { id: string }>(items: T[]): T[] => {
+  const seen = new Set<string>();
+  return items.filter(item => {
+    if (seen.has(item.id)) return false;
+    seen.add(item.id);
+    return true;
+  });
+};
+
 // Add core topics to Journalism (Português, Inglês, TI Básica, Legislação, Alagoas)
 COURSES_CONFIG.jornalismo.topics.push(
   { id: 'portugues', title: 'Língua Portuguesa', category: 'Português', subtopics: ['Reescrita de Frases', 'Coesão Textual', 'Crase e Regência', 'Pontuação CEBRASPE'] },
@@ -638,6 +647,9 @@ COURSES_CONFIG.jornalismo.topics.push(
 COURSES_CONFIG.jornalismo.studySections.push(
   ...defaultSeplagSections.filter(section => ['portugues', 'ingles', 'ti', 'etica', 'alagoas', 'marco_legal_cti', 'legislacao_especifica_fapeal'].includes(section.id))
 );
+
+COURSES_CONFIG.jornalismo.topics = uniqueById(COURSES_CONFIG.jornalismo.topics);
+COURSES_CONFIG.jornalismo.studySections = uniqueById(COURSES_CONFIG.jornalismo.studySections);
 
 /**
  * Algorithmic generator of study weeks based on:
